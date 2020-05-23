@@ -1,38 +1,41 @@
 package com.example.algorarithmqustionssolution;
 
-
-import com.example.algorarithmqustionssolution.Solution.*;
-
 /**
- * 根据前序遍历和中序遍历重建二叉树
- *
- * 网页链接：https://lrh1993.gitbooks.io/android_interview_guide/content/algorithm/For-offer/04.html
+ * 牛客网二叉树定义
  */
-public class Question4 {
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
 
-//    /**
-//     * 二叉树节点类
-//     */
-//    public static class BinaryTreeNode {
-//        int value;
-//        BinaryTreeNode left;
-//        BinaryTreeNode right;
-//    }
+public class Solution {
 
     /**
-     * 输入某二叉树的前序遍历和中序遍历的结果，请重建出该二节树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
-     *
-     * @param preorder 前序遍历
-     * @param inorder  中序遍历
-     * @return 树的根结点
+     * 二叉树节点类
      */
-    public static Solution.BinaryTreeNode construct(int[] preorder, int[] inorder) {
-        // 输入的合法性判断，两个数组都不能为空，并且都有数据，而且数据的数目相同
-        if (preorder == null || inorder == null || preorder.length != inorder.length || inorder.length < 1) {
-            return null;
+    public static class BinaryTreeNode {
+        public int value;
+        public BinaryTreeNode left;
+        public BinaryTreeNode right;
+
+        public static TreeNode toTreeNode(BinaryTreeNode node){
+            TreeNode treeNode = null;
+            if (node == null){
+                return null;
+            }else{
+                treeNode = new TreeNode(node.value);
+                treeNode.left = toTreeNode(node.left);
+                treeNode.right = toTreeNode(node.right);
+            }
+            return treeNode;
         }
 
-        return construct(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
+    }
+
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        return BinaryTreeNode.toTreeNode(construct(pre, 0, pre.length - 1, in, 0, in.length - 1));
     }
 
     /**
