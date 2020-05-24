@@ -41,30 +41,16 @@ public class Solution {
      * @param lastNode 已经处理好的双向链表的尾结点，使用一个长度为1的数组，类似C++中的二级指针
      */
     public static void convertNode(TreeNode node, TreeNode[] lastNode) {
-        // 结点不为空
-        if (node != null) {
-
-            // 如果有左子树就先处理左子树
-            if (node.left != null) {
-                convertNode(node.left, lastNode);
-            }
-
-            // 将当前结点的前驱指向已经处理好的双向链表（由当前结点的左子树构成）的尾结点
-            node.left = lastNode[0];
-
-            // 如果左子树转换成的双向链表不为空，设置尾结点的后继
-            if (lastNode[0] != null) {
-                lastNode[0].right = node;
-            }
-
-            // 记录当前结点为尾结点
-            lastNode[0] = node;
-
-            // 处理右子树
-            if (node.right != null) {
-                convertNode(node.right, lastNode);
-            }
+        if (node == null){
+            return;
         }
+        convertNode(node.left, lastNode);
+        if (lastNode[0] != null){
+            lastNode[0].right = node;
+        }
+        node.left = lastNode[0];
+        lastNode[0] = node;
+        convertNode(node.right, lastNode);
     }
 
     /**
