@@ -8,52 +8,63 @@ import java.util.Queue;
 @SuppressWarnings("unused")
 public class Solution {
 
-    private static ArrayList<ArrayList<Integer>> sResultList = new ArrayList<>();
-
-    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
-        sResultList.clear();
-        findPath(NodeTranslateUtil.toBinaryTreeNode(root), target);
-        return sResultList;
+    public TreeNode Convert(TreeNode pRootOfTree) {
+        return convert(pRootOfTree);
     }
 
     /**
-     * 输入一棵二叉树和一个整数， 打印出二叉树中结点值的和为输入整数的所有路径。
-     * 从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+     * 题目：输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+     * 要求不能创建任何新的结点，只能调整树中结点指针的指向。
      *
-     * @param root        树的根结点
-     * @param expectedSum 要求的路径和
+     * @param root 二叉树的根结点
+     * @return 双向链表的头结点
      */
-    public static void findPath(BinaryTreeNode root, int expectedSum) {
-        // 创建一个链表，用于存放根结点到当前处理结点的所经过的结点
-        List<Integer> list = new ArrayList<>();
+    public static TreeNode convert(TreeNode root) {
 
-        // 如果根结点不为空，就调用辅助处理方法
-        if (root != null) {
-            findPath(root, 0, expectedSum, list);
+        // 用于保存处理过程中的双向链表的尾结点
+        TreeNode[] lastNode = new TreeNode[1];
+        convertNode(root, lastNode);
+
+        // 找到双向链表的头结点
+        TreeNode head = lastNode[0];
+        while (head != null && head.left != null) {
+            head = head.left;
         }
+        return head;
     }
 
+
     /**
-     * @param root        当前要处理的结点
-     * @param curSum      当前记录的和（还未加上当前结点的值）
-     * @param expectedSum 要求的路径和
-     * @param result      根结点到当前处理结点的所经过的结点，（还未包括当前结点）
+     * 链表表转换操作
+     *
+     * @param node     当前的根结点
+     * @param lastNode 已经处理好的双向链表的尾结点，使用一个长度为1的数组，类似C++中的二级指针
      */
-    public static void findPath(BinaryTreeNode root, int curSum, int expectedSum, List<Integer> result) {
-        if (root == null){
-            return;
-        }
-        curSum += root.value;
-        result.add(root.value);
-        if (curSum < expectedSum){
-            findPath(root.left, curSum, expectedSum, result);
-            findPath(root.right, curSum, expectedSum, result);
-        }else if(curSum == expectedSum){
-            if (root.left == null && root.right == null){
-                sResultList.add(new ArrayList<>(result));
+    public static void convertNode(TreeNode node, TreeNode[] lastNode) {
+        // 结点不为空
+        if (node != null) {
+
+            // 如果有左子树就先处理左子树
+            if (node.left != null) {
+                convertNode(node.left, lastNode);
+            }
+
+            // 将当前结点的前驱指向已经处理好的双向链表（由当前结点的左子树构成）的尾结点
+            node.left = lastNode[0];
+
+            // 如果左子树转换成的双向链表不为空，设置尾结点的后继
+            if (lastNode[0] != null) {
+                lastNode[0].right = node;
+            }
+
+            // 记录当前结点为尾结点
+            lastNode[0] = node;
+
+            // 处理右子树
+            if (node.right != null) {
+                convertNode(node.right, lastNode);
             }
         }
-        result.remove(result.size()-1);
     }
 
     /**
