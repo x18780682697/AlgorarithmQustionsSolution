@@ -12,7 +12,7 @@ import org.junit.Assert.*
 class ExampleUnitTest {
 
     /**
-     *
+     * 第4题
      */
     @Test
     fun testQ4() {
@@ -26,6 +26,17 @@ class ExampleUnitTest {
             .run {
                 assertArrayEquals(ExampleBinaryTree.postOrderArray, this?.toIntArray())
             }
+    }
+
+    /**
+     * 第17题
+     */
+    @Test
+    fun testQ17() {
+        // 创建二叉树
+        ExampleBinaryTree.create().run {
+            assertEquals(true, Question17Fixed.HasSubtree(this, this))
+        }
     }
 
 }
