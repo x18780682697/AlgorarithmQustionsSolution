@@ -40,31 +40,20 @@ public class Solution {
      * @param result      根结点到当前处理结点的所经过的结点，（还未包括当前结点）
      */
     public static void findPath(BinaryTreeNode root, int curSum, int expectedSum, List<Integer> result) {
-
-        // 如果结点不为空就进行处理
-        if (root != null) {
-            // 加上当前结点的值
-            curSum += root.value;
-            // 将当前结点入队
-            result.add(root.value);
-            // 如果当前结点的值小于期望的和
-            if (curSum < expectedSum) {
-                // 递归处理左子树
-                findPath(root.left, curSum, expectedSum, result);
-                // 递归处理右子树
-                findPath(root.right, curSum, expectedSum, result);
-            }
-            // 如果当前和与期望的和相等
-            else if (curSum == expectedSum) {
-                // 当前结点是叶结点，则输出结果
-                if (root.left == null && root.right == null) {
-                    System.out.println(result);
-                    sResultList.add(new ArrayList<>(result));
-                }
-            }
-            // 移除当前结点
-            result.remove(result.size() - 1);
+        if (root == null){
+            return;
         }
+        curSum += root.value;
+        result.add(root.value);
+        if (curSum < expectedSum){
+            findPath(root.left, curSum, expectedSum, result);
+            findPath(root.right, curSum, expectedSum, result);
+        }else if(curSum == expectedSum){
+            if (root.left == null && root.right == null){
+                sResultList.add(new ArrayList<>(result));
+            }
+        }
+        result.remove(result.size()-1);
     }
 
     /**
