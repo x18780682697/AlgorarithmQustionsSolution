@@ -3,38 +3,33 @@ package com.example.algorarithmqustionssolution;
 @SuppressWarnings("unused")
 public class Solution {
 
-    /**
-     * 寻找相同节点并比较结构是否相同
-     */
-    public boolean HasSubtree(TreeNode root1,TreeNode root2) {
-        if (root2 == null){
-            return false;
+    public void Mirror(TreeNode root) {
+        BinaryTreeNode binaryTreeNode = NodeTranslateUtil.toBinaryTreeNode(root);
+        mirror(binaryTreeNode);
+        TreeNode treeNode = NodeTranslateUtil.toTreeNode(binaryTreeNode);
+        if (treeNode != null){
+            root.left = treeNode.left;
+            root.right = treeNode.right;
         }
-        if (root1 == null){
-            return false;
-        }
-        boolean hasSubTree = false;
-        if (root1.val == root2.val){
-            hasSubTree = hasSameStructure(root1, root2);
-        }
-        if (!hasSubTree){
-            hasSubTree = HasSubtree(root1.left, root2);
-        }
-        if (!hasSubTree){
-            hasSubTree = HasSubtree(root1.right, root2);
-        }
-        return hasSubTree;
     }
 
-    private boolean hasSameStructure(TreeNode root1, TreeNode root2){
-        if (root2 == null){
-            return true;
+    /**
+     * 请完成一个函数，输入…个二叉树，该函数输出它的镜像
+     *
+     * @param node 二叉树的根结点
+     */
+    public static void mirror(BinaryTreeNode node) {
+        // 如果当前结点不为空则进行操作
+        if (node != null) {
+            // 下面是交换结点左右两个子树
+            BinaryTreeNode tmp = node.left;
+            node.left = node.right;
+            node.right = tmp;
+
+            // 对结点的左右两个子树进行处理
+            mirror(node.left);
+            mirror(node.right);
         }
-        if (root1 == null){
-            return false;
-        }
-        return root1.val == root2.val && hasSameStructure(root1.left, root2.left)
-                && hasSameStructure(root1.right, root2.right);
     }
 
     /**

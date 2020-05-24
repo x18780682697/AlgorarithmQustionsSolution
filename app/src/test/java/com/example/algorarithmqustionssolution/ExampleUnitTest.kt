@@ -39,4 +39,12 @@ class ExampleUnitTest {
         }
     }
 
+    /**
+     * 第18题
+     */
+    @Test
+    fun testQ18() {
+        // 暂无测试
+    }
+
 }
