@@ -5,7 +5,6 @@ import com.example.algorarithmqustionssolution.Solution.BinaryTreeNode;
 
 /**
  * 根据前序遍历和中序遍历重建二叉树
- * （此解法有缺陷，在牛客网仅有70%的通过率）
  *
  * 网页链接：https://lrh1993.gitbooks.io/android_interview_guide/content/algorithm/For-offer/04.html
  * 题号链接：https://zhuanlan.zhihu.com/p/56200260
