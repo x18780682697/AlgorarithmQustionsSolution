@@ -2,57 +2,68 @@ package com.example.algorarithmqustionssolution;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 @SuppressWarnings("unused")
 public class Solution {
 
-    public boolean VerifySquenceOfBST(int [] sequence) {
-        return verifySequenceOfBST(sequence);
+    private static ArrayList<ArrayList<Integer>> sResultList = new ArrayList<>();
+
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+        sResultList.clear();
+        findPath(NodeTranslateUtil.toBinaryTreeNode(root), target);
+        return sResultList;
     }
 
     /**
-     * 输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
-     * 如果是则返回true。否则返回false。假设输入的数组的任意两个数字都互不相同。
+     * 输入一棵二叉树和一个整数， 打印出二叉树中结点值的和为输入整数的所有路径。
+     * 从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
      *
-     * @param sequence 某二叉搜索树的后序遍历的结果
-     * @return true：该数组是某二叉搜索树的后序遍历的结果。false：不是
+     * @param root        树的根结点
+     * @param expectedSum 要求的路径和
      */
-    public static boolean verifySequenceOfBST(int[] sequence) {
+    public static void findPath(BinaryTreeNode root, int expectedSum) {
+        // 创建一个链表，用于存放根结点到当前处理结点的所经过的结点
+        List<Integer> list = new ArrayList<>();
 
-        // 输入的数组不能为空，并且有数据
-        if (sequence == null || sequence.length <= 0) {
-            return false;
+        // 如果根结点不为空，就调用辅助处理方法
+        if (root != null) {
+            findPath(root, 0, expectedSum, list);
         }
-
-        // 有数据，就调用辅助方法
-        return verifySequenceOfBST(sequence, 0, sequence.length - 1);
     }
 
     /**
-     * 输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
-     * @param sequence 某二叉搜索树的后序遍历的结果
-     * @param start    处理的开始位置
-     * @param end      处理的结束位置
-     * @return true：该数组是某二叉搜索树的后序遍历的结果。false：不是
+     * @param root        当前要处理的结点
+     * @param curSum      当前记录的和（还未加上当前结点的值）
+     * @param expectedSum 要求的路径和
+     * @param result      根结点到当前处理结点的所经过的结点，（还未包括当前结点）
      */
-    public static boolean verifySequenceOfBST(int[] sequence, int start, int end) {
-        if (start >= end){
-            return true;
-        }
-        int index = start;
-        while (index < end-1 && sequence[index] < sequence[end]){
-            index++;
-        }
-        int rStart = index;
-        while (index < end-1 && sequence[index] > sequence[end]){
-            index++;
-        }
-        if (index == end-1){
-            return verifySequenceOfBST(sequence, start, rStart-1)
-                    && verifySequenceOfBST(sequence, rStart, end-1);
-        }else{
-            return false;
+    public static void findPath(BinaryTreeNode root, int curSum, int expectedSum, List<Integer> result) {
+
+        // 如果结点不为空就进行处理
+        if (root != null) {
+            // 加上当前结点的值
+            curSum += root.value;
+            // 将当前结点入队
+            result.add(root.value);
+            // 如果当前结点的值小于期望的和
+            if (curSum < expectedSum) {
+                // 递归处理左子树
+                findPath(root.left, curSum, expectedSum, result);
+                // 递归处理右子树
+                findPath(root.right, curSum, expectedSum, result);
+            }
+            // 如果当前和与期望的和相等
+            else if (curSum == expectedSum) {
+                // 当前结点是叶结点，则输出结果
+                if (root.left == null && root.right == null) {
+                    System.out.println(result);
+                    sResultList.add(new ArrayList<>(result));
+                }
+            }
+            // 移除当前结点
+            result.remove(result.size() - 1);
         }
     }
 
