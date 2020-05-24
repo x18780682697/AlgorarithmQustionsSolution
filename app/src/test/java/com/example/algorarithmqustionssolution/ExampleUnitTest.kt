@@ -47,4 +47,12 @@ class ExampleUnitTest {
         // 暂无测试
     }
 
+    /**
+     * 第22题
+     */
+    @Test
+    fun testQ22() {
+        // 暂无测试
+    }
+
 }
