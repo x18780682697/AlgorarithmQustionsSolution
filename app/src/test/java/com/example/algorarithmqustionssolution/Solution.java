@@ -7,38 +7,34 @@ public class Solution {
      * 寻找相同节点并比较结构是否相同
      */
     public boolean HasSubtree(TreeNode root1,TreeNode root2) {
-        // root2为空不认为是子结构
-        if(root2==null) return false;
-        // root1为空不认为是子结构
-        if(root1==null && root2!=null) return false;
-        boolean flag = false;
-        // 判定当前根节点是否与root2根节点相同
-        if(root1.val==root2.val){
-            // 若当前根节点相同，比较节点之下的结构是否相同
-            flag = isSubTree(root1,root2);
-        }
-        if(!flag){
-            // 递归寻找左子树上是否有与root2相同的子结构
-            flag = HasSubtree(root1.left, root2);
-            if(!flag){
-                // 如左子树上未找到，则递归寻找右子树上是否有与root2相同的子结构
-                flag = HasSubtree(root1.right, root2);
-            }
-        }
-        return flag;
-    }
-
-    private boolean isSubTree(TreeNode root1, TreeNode root2) {
-        // 已经比较完全，判定root2是root1的子结构
-        if(root2==null) return true;
-        // root2深度大于root1，则判定root2不是root1的子结构
-        if(root1==null && root2!=null) return false;
-        // 根节点值相同，并且左右子树上的节点值也完全相同
-        if(root1.val==root2.val){
-            return isSubTree(root1.left, root2.left) && isSubTree(root1.right, root2.right);
-        }else{
+        if (root2 == null){
             return false;
         }
+        if (root1 == null){
+            return false;
+        }
+        boolean hasSubTree = false;
+        if (root1.val == root2.val){
+            hasSubTree = hasSameStructure(root1, root2);
+        }
+        if (!hasSubTree){
+            hasSubTree = HasSubtree(root1.left, root2);
+        }
+        if (!hasSubTree){
+            hasSubTree = HasSubtree(root1.right, root2);
+        }
+        return hasSubTree;
+    }
+
+    private boolean hasSameStructure(TreeNode root1, TreeNode root2){
+        if (root2 == null){
+            return true;
+        }
+        if (root1 == null){
+            return false;
+        }
+        return root1.val == root2.val && hasSameStructure(root1.left, root2.left)
+                && hasSameStructure(root1.right, root2.right);
     }
 
     /**
