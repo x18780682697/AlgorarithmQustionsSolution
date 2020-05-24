@@ -19,17 +19,14 @@ public class Solution {
      * @param node 二叉树的根结点
      */
     public static void mirror(BinaryTreeNode node) {
-        // 如果当前结点不为空则进行操作
-        if (node != null) {
-            // 下面是交换结点左右两个子树
-            BinaryTreeNode tmp = node.left;
-            node.left = node.right;
-            node.right = tmp;
-
-            // 对结点的左右两个子树进行处理
-            mirror(node.left);
-            mirror(node.right);
+        if (node == null){
+            return;
         }
+        BinaryTreeNode tmpNode = node.left;
+        node.left = node.right;
+        mirror(node.left);
+        node.right = tmpNode;
+        mirror(node.right);
     }
 
     /**
