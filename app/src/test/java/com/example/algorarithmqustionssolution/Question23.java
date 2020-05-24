@@ -1,15 +1,27 @@
 package com.example.algorarithmqustionssolution;
 
-import java.util.ArrayList;
+import com.example.algorarithmqustionssolution.Solution.BinaryTreeNode;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * 二叉搜索树的后序遍历序列
+ *
+ * 网页链接：https://lrh1993.gitbooks.io/android_interview_guide/content/algorithm/For-offer/21.html
+ * 题号链接：https://zhuanlan.zhihu.com/p/56200260
+ */
 @SuppressWarnings("unused")
-public class Solution {
+public class Question23 {
 
-    public boolean VerifySquenceOfBST(int [] sequence) {
-        return verifySequenceOfBST(sequence);
-    }
+//    /**
+//     * 二叉树节点类
+//     */
+//    public static class BinaryTreeNode {
+//        int value;
+//        BinaryTreeNode left;
+//        BinaryTreeNode right;
+//    }
 
     /**
      * 输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
@@ -75,59 +87,4 @@ public class Solution {
         return verifySequenceOfBST(sequence, start, index - 1) && verifySequenceOfBST(sequence, index, end - 1);
     }
 
-    /**
-     * 二叉树节点类
-     */
-    public static class BinaryTreeNode {
-        public int value;
-        public BinaryTreeNode left;
-        public BinaryTreeNode right;
-    }
-
-    /**
-     * TreeNode和BinaryTreeNode之间的转换工具
-     */
-    public static class NodeTranslateUtil {
-        /**
-         * 转换为TreeNode
-         */
-        public static TreeNode toTreeNode(BinaryTreeNode node){
-            TreeNode treeNode = null;
-            if (node == null){
-                return null;
-            }else{
-                treeNode = new TreeNode(node.value);
-                treeNode.left = toTreeNode(node.left);
-                treeNode.right = toTreeNode(node.right);
-            }
-            return treeNode;
-        }
-
-        /**
-         * 转换为BinaryTreeNode
-         */
-        public static BinaryTreeNode toBinaryTreeNode(TreeNode node){
-            BinaryTreeNode binaryTreeNode = null;
-            if (node == null){
-                return null;
-            }else{
-                binaryTreeNode = new BinaryTreeNode();
-                binaryTreeNode.value = node.val;
-                binaryTreeNode.left = toBinaryTreeNode(node.left);
-                binaryTreeNode.right = toBinaryTreeNode(node.right);
-            }
-            return binaryTreeNode;
-        }
-    }
-
-}
-
-/**
- * 牛客网二叉树定义
- */
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
 }
