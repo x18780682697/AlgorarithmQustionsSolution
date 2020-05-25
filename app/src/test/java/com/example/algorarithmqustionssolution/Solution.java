@@ -13,14 +13,16 @@ public class Solution {
     }
 
     public static int treeDepth(BinaryTreeNode root) {
-        if (root == null) {
+        if (root == null){
             return 0;
         }
-
-        int left = treeDepth(root.left);
-        int right = treeDepth(root.right);
-
-        return left > right ? (left + 1) : (right + 1);
+        int leftDepth = treeDepth(root.left);
+        int rightDepth = treeDepth(root.right);
+        if (leftDepth > rightDepth){
+            return leftDepth+1;
+        }else{
+            return rightDepth+1;
+        }
     }
 
     /**
