@@ -48,7 +48,7 @@ class ExampleUnitTest {
     }
 
     /**
-     * 第22题
+     * 第22题 test
      */
     @Test
     fun testQ22() {
