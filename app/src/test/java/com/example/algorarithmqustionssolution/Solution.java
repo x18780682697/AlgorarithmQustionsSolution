@@ -18,20 +18,17 @@ public class Solution {
     }
 
     private static boolean isSymmetrical(BinaryTreeNode left, BinaryTreeNode right) {
-
-        if (left == null && right == null) {
+        if (left == null && right == null){
             return true;
         }
-
-        if (left == null || right == null) {
-            return false;
+        if(left != null && right != null){
+            if (left.value != right.value){
+                return false;
+            }else{
+                return isSymmetrical(left.left, right.right) && isSymmetrical(left.right, right.left);
+            }
         }
-
-        if (left.value != right.value ) {
-            return false;
-        }
-
-        return isSymmetrical(left.left, right.right) && isSymmetrical(left.right, right.left);
+        return false;
     }
 
     /**
