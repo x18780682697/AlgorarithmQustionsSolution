@@ -16,58 +16,39 @@ public class Solution {
     }
 
     public static void print(BinaryTreeNode root) {
-
-        if (root == null) {
+        if (root == null){
             return;
         }
-
-
-        List<BinaryTreeNode> current = new LinkedList<>();
-        List<BinaryTreeNode> reverse = new LinkedList<>();
-        int flag = 0;
-        BinaryTreeNode node;
-        current.add(root);
+        List<BinaryTreeNode> current = new ArrayList<>();
+        List<BinaryTreeNode> childNodeList = new ArrayList<>();
         ArrayList<Integer> tmpResultList = new ArrayList<>();
-
-        while (current.size() > 0) {
-
-            // 从最后一个开始取
-            node = current.remove(current.size() - 1);
-
+        int flag = 1;
+        current.add(root);
+        while (current.size() != 0){
+            BinaryTreeNode node = current.remove(current.size() - 1);
             tmpResultList.add(node.val);
-            System.out.printf("%-3d", node.val);
-
-            // 当前是从左往右打印的，那就按从左往右入栈
-            if (flag == 0) {
-                if (node.left != null) {
-                    reverse.add(node.left);
+            if (flag % 2 == 1){ // 奇数行的子节点从左到右存入，从右到左取出并打印
+                if (node.left != null){
+                    childNodeList.add(node.left);
                 }
-
-                if (node.right != null) {
-                    reverse.add(node.right);
+                if (node.right != null){
+                    childNodeList.add(node.right);
                 }
-
-
-            }
-            // 当前是从右往左打印的，那就按从右往左入栈
-            else {
-                if (node.right != null) {
-                    reverse.add(node.right);
+            }else{ // 偶数行的子节点从右到左存入，从左到右取出并打印
+                if (node.right != null){
+                    childNodeList.add(node.right);
                 }
-
-                if (node.left != null) {
-                    reverse.add(node.left);
+                if (node.left != null){
+                    childNodeList.add(node.left);
                 }
             }
-
-            if (current.size() == 0) {
-                flag = 1 - flag;
-                List<BinaryTreeNode> tmp = current;
-                current = reverse;
-                reverse = tmp;
-                System.out.println();
+            if (current.size() == 0){
                 sResultList.add(tmpResultList);
                 tmpResultList = new ArrayList<>();
+                List<BinaryTreeNode> tmp = current;
+                current = childNodeList;
+                childNodeList = tmp;
+                flag++;
             }
         }
     }
