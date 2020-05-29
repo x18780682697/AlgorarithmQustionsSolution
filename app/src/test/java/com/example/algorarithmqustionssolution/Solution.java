@@ -3,39 +3,80 @@ package com.example.algorarithmqustionssolution;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 @SuppressWarnings("unused")
 public class Solution {
 
-    boolean isSymmetrical(TreeNode pRoot)
-    {
-        return isSymmetrical(NodeTranslateUtil.toBinaryTreeNode(pRoot));
-    }
-    
-    public static boolean isSymmetrical(BinaryTreeNode root) {
-        return isSymmetrical(root, root);
+    public static ArrayList<ArrayList<Integer>> sResultList = new ArrayList<>();
+
+    public ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
+        sResultList.clear();
+        print(NodeTranslateUtil.toBinaryTreeNode(pRoot));
+        return sResultList;
     }
 
-    private static boolean isSymmetrical(BinaryTreeNode left, BinaryTreeNode right) {
-        if (left == null && right == null){
-            return true;
+    public static void print(BinaryTreeNode root) {
+
+        if (root == null) {
+            return;
         }
-        if(left != null && right != null){
-            if (left.value != right.value){
-                return false;
-            }else{
-                return isSymmetrical(left.left, right.right) && isSymmetrical(left.right, right.left);
+
+
+        List<BinaryTreeNode> current = new LinkedList<>();
+        List<BinaryTreeNode> reverse = new LinkedList<>();
+        int flag = 0;
+        BinaryTreeNode node;
+        current.add(root);
+        ArrayList<Integer> tmpResultList = new ArrayList<>();
+
+        while (current.size() > 0) {
+
+            // 从最后一个开始取
+            node = current.remove(current.size() - 1);
+
+            tmpResultList.add(node.val);
+            System.out.printf("%-3d", node.val);
+
+            // 当前是从左往右打印的，那就按从左往右入栈
+            if (flag == 0) {
+                if (node.left != null) {
+                    reverse.add(node.left);
+                }
+
+                if (node.right != null) {
+                    reverse.add(node.right);
+                }
+
+
+            }
+            // 当前是从右往左打印的，那就按从右往左入栈
+            else {
+                if (node.right != null) {
+                    reverse.add(node.right);
+                }
+
+                if (node.left != null) {
+                    reverse.add(node.left);
+                }
+            }
+
+            if (current.size() == 0) {
+                flag = 1 - flag;
+                List<BinaryTreeNode> tmp = current;
+                current = reverse;
+                reverse = tmp;
+                System.out.println();
+                sResultList.add(tmpResultList);
+                tmpResultList = new ArrayList<>();
             }
         }
-        return false;
     }
 
     /**
      * 二叉树节点类
      */
     public static class BinaryTreeNode {
-        public int value;
+        public int val;
         public BinaryTreeNode left;
         public BinaryTreeNode right;
         public BinaryTreeNode parent;
@@ -56,7 +97,7 @@ class NodeTranslateUtil {
         if (node == null){
             return null;
         }else{
-            treeNode = new TreeNode(node.value);
+            treeNode = new TreeNode(node.val);
             treeNode.left = toTreeNode(node.left);
             treeNode.right = toTreeNode(node.right);
             treeNode.next = toTreeNode(node.parent);
@@ -73,7 +114,7 @@ class NodeTranslateUtil {
             return null;
         }else{
             binaryTreeNode = new Solution.BinaryTreeNode();
-            binaryTreeNode.value = node.val;
+            binaryTreeNode.val = node.val;
             binaryTreeNode.left = toBinaryTreeNode(node.left);
             binaryTreeNode.right = toBinaryTreeNode(node.right);
             binaryTreeNode.parent = toBinaryTreeNode(node.next);
