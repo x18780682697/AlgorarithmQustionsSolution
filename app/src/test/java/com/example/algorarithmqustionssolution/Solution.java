@@ -8,69 +8,40 @@ import java.util.Queue;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public boolean IsBalanced_Solution(TreeNode root) {
-        return isBalanced2(NodeTranslateUtil.toBinaryTreeNode(root));
+    public TreeLinkNode GetNext(TreeLinkNode pNode)
+    {
+        return getNext(pNode);
     }
 
-    public static int treeDepth(BinaryTreeNode root) {
-        if (root == null) {
-            return 0;
+    public static TreeLinkNode getNext(TreeLinkNode node) {
+        if (node == null) {
+            return null;
         }
 
-        int left = treeDepth(root.left);
-        int right = treeDepth(root.right);
+        // 保存要查找的下一个节点
+        TreeLinkNode target = null;
 
-        return left > right ? (left + 1) : (right + 1);
-    }
-
-    /**
-     * 判断是否是平衡二叉树，第一种解法
-     *
-     * @param root
-     * @return
-     */
-    public static boolean isBalanced(BinaryTreeNode root) {
-        if (root == null) {
-            return true;
-        }
-
-        int left = treeDepth(root.left);
-        int right = treeDepth(root.right);
-        int diff = left - right;
-        if (diff > 1 || diff < -1) {
-            return false;
-        }
-
-        return isBalanced(root.left) && isBalanced(root.right);
-    }
-
-
-    /**
-     * 判断是否是平衡二叉树，第二种解法
-     *
-     * @param root
-     * @return
-     */
-    public static boolean isBalanced2(BinaryTreeNode root) {
-        int[] depth = new int[1];
-        return isBalancedHelper(root, depth);
-    }
-
-    public static boolean isBalancedHelper(BinaryTreeNode root, int[] depth) {
-        if (root == null){
-            depth[0] = 0;
-            return true;
-        }
-        int[] left = new int[1];
-        int[] right = new int[1];
-        if (isBalancedHelper(root.left, left) && isBalancedHelper(root.right, right)){
-            int diffAbs = Math.abs(left[0] - right[0]);
-            if (diffAbs <= 1){
-                depth[0] = 1 + (Math.max(left[0], right[0]));
-                return true;
+        if (node.right != null) {
+            target = node.right;
+            while (target.left != null) {
+                target = target.left;
             }
+
+            return target;
+        } else if (node.next != null){
+            target = node.next;
+            TreeLinkNode cur = node;
+            // 如果父新结点不为空，并且，子结点不是父结点的左孩子
+            while (target != null && target.left != cur) {
+                cur = target;
+                target = target.next;
+
+            }
+
+            return target;
         }
-        return false;
+
+        return null;
     }
 
     /**
@@ -80,6 +51,7 @@ public class Solution {
         public int value;
         public BinaryTreeNode left;
         public BinaryTreeNode right;
+        public BinaryTreeNode parent;
     }
 
 }
@@ -92,14 +64,15 @@ class NodeTranslateUtil {
     /**
      * 转换为TreeNode
      */
-    public static TreeNode toTreeNode(Solution.BinaryTreeNode node){
-        TreeNode treeNode = null;
+    public static TreeLinkNode toTreeNode(Solution.BinaryTreeNode node){
+        TreeLinkNode treeNode = null;
         if (node == null){
             return null;
         }else{
-            treeNode = new TreeNode(node.value);
+            treeNode = new TreeLinkNode(node.value);
             treeNode.left = toTreeNode(node.left);
             treeNode.right = toTreeNode(node.right);
+            treeNode.next = toTreeNode(node.parent);
         }
         return treeNode;
     }
@@ -107,7 +80,7 @@ class NodeTranslateUtil {
     /**
      * 转换为BinaryTreeNode
      */
-    public static Solution.BinaryTreeNode toBinaryTreeNode(TreeNode node){
+    public static Solution.BinaryTreeNode toBinaryTreeNode(TreeLinkNode node){
         Solution.BinaryTreeNode binaryTreeNode = null;
         if (node == null){
             return null;
@@ -116,6 +89,7 @@ class NodeTranslateUtil {
             binaryTreeNode.value = node.val;
             binaryTreeNode.left = toBinaryTreeNode(node.left);
             binaryTreeNode.right = toBinaryTreeNode(node.right);
+            binaryTreeNode.parent = toBinaryTreeNode(node.next);
         }
         return binaryTreeNode;
     }
@@ -124,9 +98,10 @@ class NodeTranslateUtil {
 /**
  * 牛客网二叉树定义
  */
-class TreeNode {
+class TreeLinkNode {
     int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
+    TreeLinkNode left;
+    TreeLinkNode right;
+    TreeLinkNode next = null;
+    TreeLinkNode(int x) { val = x; }
 }
