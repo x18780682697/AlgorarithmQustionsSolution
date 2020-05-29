@@ -8,30 +8,30 @@ import java.util.Queue;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public TreeLinkNode GetNext(TreeLinkNode pNode)
+    boolean isSymmetrical(TreeNode pRoot)
     {
-        return getNext(pNode);
+        return isSymmetrical(NodeTranslateUtil.toBinaryTreeNode(pRoot));
+    }
+    
+    public static boolean isSymmetrical(BinaryTreeNode root) {
+        return isSymmetrical(root, root);
     }
 
-    public static TreeLinkNode getNext(TreeLinkNode node) {
-        if (node == null){
-            return null;
+    private static boolean isSymmetrical(BinaryTreeNode left, BinaryTreeNode right) {
+
+        if (left == null && right == null) {
+            return true;
         }
-        TreeLinkNode targetNode = null;
-        if (node.right != null){
-            targetNode = node.right;
-            while (targetNode.left != null){
-                targetNode = targetNode.left;
-            }
-        }else if(node.next != null){
-            targetNode = node.next;
-            TreeLinkNode currentNode = node;
-            while (targetNode != null && targetNode.right == currentNode){
-                currentNode = targetNode;
-                targetNode = targetNode.next;
-            }
+
+        if (left == null || right == null) {
+            return false;
         }
-        return targetNode;
+
+        if (left.value != right.value ) {
+            return false;
+        }
+
+        return isSymmetrical(left.left, right.right) && isSymmetrical(left.right, right.left);
     }
 
     /**
@@ -54,12 +54,12 @@ class NodeTranslateUtil {
     /**
      * 转换为TreeNode
      */
-    public static TreeLinkNode toTreeNode(Solution.BinaryTreeNode node){
-        TreeLinkNode treeNode = null;
+    public static TreeNode toTreeNode(Solution.BinaryTreeNode node){
+        TreeNode treeNode = null;
         if (node == null){
             return null;
         }else{
-            treeNode = new TreeLinkNode(node.value);
+            treeNode = new TreeNode(node.value);
             treeNode.left = toTreeNode(node.left);
             treeNode.right = toTreeNode(node.right);
             treeNode.next = toTreeNode(node.parent);
@@ -70,7 +70,7 @@ class NodeTranslateUtil {
     /**
      * 转换为BinaryTreeNode
      */
-    public static Solution.BinaryTreeNode toBinaryTreeNode(TreeLinkNode node){
+    public static Solution.BinaryTreeNode toBinaryTreeNode(TreeNode node){
         Solution.BinaryTreeNode binaryTreeNode = null;
         if (node == null){
             return null;
@@ -88,10 +88,10 @@ class NodeTranslateUtil {
 /**
  * 牛客网二叉树定义
  */
-class TreeLinkNode {
+class TreeNode {
     int val;
-    TreeLinkNode left;
-    TreeLinkNode right;
-    TreeLinkNode next = null;
-    TreeLinkNode(int x) { val = x; }
+    TreeNode left;
+    TreeNode right;
+    TreeNode next = null;
+    TreeNode(int x) { val = x; }
 }
