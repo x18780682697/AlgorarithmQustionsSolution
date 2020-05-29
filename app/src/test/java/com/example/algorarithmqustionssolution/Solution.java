@@ -14,34 +14,24 @@ public class Solution {
     }
 
     public static TreeLinkNode getNext(TreeLinkNode node) {
-        if (node == null) {
+        if (node == null){
             return null;
         }
-
-        // 保存要查找的下一个节点
-        TreeLinkNode target = null;
-
-        if (node.right != null) {
-            target = node.right;
-            while (target.left != null) {
-                target = target.left;
+        TreeLinkNode targetNode = null;
+        if (node.right != null){
+            targetNode = node.right;
+            while (targetNode.left != null){
+                targetNode = targetNode.left;
             }
-
-            return target;
-        } else if (node.next != null){
-            target = node.next;
-            TreeLinkNode cur = node;
-            // 如果父新结点不为空，并且，子结点不是父结点的左孩子
-            while (target != null && target.left != cur) {
-                cur = target;
-                target = target.next;
-
+        }else if(node.next != null){
+            targetNode = node.next;
+            TreeLinkNode currentNode = node;
+            while (targetNode != null && targetNode.right == currentNode){
+                currentNode = targetNode;
+                targetNode = targetNode.next;
             }
-
-            return target;
         }
-
-        return null;
+        return targetNode;
     }
 
     /**
