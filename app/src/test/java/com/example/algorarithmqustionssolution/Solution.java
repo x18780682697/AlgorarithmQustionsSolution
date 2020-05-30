@@ -7,46 +7,46 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public static ArrayList<ArrayList<Integer>> sResultList = new ArrayList<>();
-
-    public ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
-        sResultList.clear();
-        print(NodeTranslateUtil.toBinaryTreeNode(pRoot));
-        return sResultList;
+    TreeNode KthNode(TreeNode pRoot, int k)
+    {
+        BinaryTreeNode tmpNode = kthNode(NodeTranslateUtil.toBinaryTreeNode(pRoot), k);
+        return tmpNode == null ? null : tmpNode.origin;
     }
 
-    /**
-     * 题目：从上到下按层打印二叉树，同一层的结点按从左到右的顺序打印，每一层打印一行。
-     * @param root
-     */
-    public static void print(BinaryTreeNode root) {
-        if (root == null){
-            return;
+    public static BinaryTreeNode kthNode(BinaryTreeNode root, int k) {
+        if (root == null || k < 1) {
+            return null;
         }
-        List<BinaryTreeNode> nodeList = new ArrayList<>();
-        nodeList.add(root);
-        int currentCnt = 1;
-        int nextCnt = 0;
-        ArrayList<Integer> tmpList = new ArrayList<>();
-        while (nodeList.size() > 0){
-            BinaryTreeNode node = nodeList.remove(0);
-            tmpList.add(node.val);
-            currentCnt--;
-            if (node.left != null){
-                nodeList.add(node.left);
-                nextCnt++;
-            }
-            if (node.right != null){
-                nodeList.add(node.right);
-                nextCnt++;
-            }
-            if (currentCnt == 0){
-                sResultList.add(tmpList);
-                tmpList = new ArrayList<>();
-                currentCnt = nextCnt;
-                nextCnt = 0;
+
+        int[] tmp = {k};
+        return kthNodeCore(root, tmp);
+    }
+
+    private static BinaryTreeNode kthNodeCore(BinaryTreeNode root, int[] k) {
+        BinaryTreeNode result = null;
+
+        // 先成左子树中找
+        if (root.left != null) {
+            result =  kthNodeCore(root.left, k);
+        }
+
+        // 如果在左子树中没有找到
+        if (result == null) {
+            // 说明当前的根结点是所要找的结点
+            if(k[0] == 1) {
+                result = root;
+            } else {
+                // 当前的根结点不是要找的结点，但是已经找过了，所以计数器减一
+                k[0]--;
             }
         }
+
+        // 根结点以及根结点的左子树都没有找到，则找其右子树
+        if (result == null && root.right != null) {
+            result = kthNodeCore(root.right, k);
+        }
+
+        return result;
     }
 
     /**
@@ -57,6 +57,7 @@ public class Solution {
         public BinaryTreeNode left;
         public BinaryTreeNode right;
         public BinaryTreeNode parent;
+        public TreeNode origin;
     }
 
 }
@@ -91,6 +92,7 @@ class NodeTranslateUtil {
             return null;
         }else{
             binaryTreeNode = new Solution.BinaryTreeNode();
+            binaryTreeNode.origin = node;
             binaryTreeNode.val = node.val;
             binaryTreeNode.left = toBinaryTreeNode(node.left);
             binaryTreeNode.right = toBinaryTreeNode(node.right);
