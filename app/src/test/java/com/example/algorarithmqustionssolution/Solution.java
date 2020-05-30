@@ -20,41 +20,31 @@ public class Solution {
      * @param root
      */
     public static void print(BinaryTreeNode root) {
-        if (root == null) {
+        if (root == null){
             return;
         }
-
-        List<BinaryTreeNode> list = new LinkedList<>();
-        BinaryTreeNode node;
-        // 当前层的结点个数
-        int current = 1;
-        // 记录下一层的结点个数
-        int next = 0;
-        //
+        List<BinaryTreeNode> nodeList = new ArrayList<>();
+        nodeList.add(root);
+        int currentCnt = 1;
+        int nextCnt = 0;
         ArrayList<Integer> tmpList = new ArrayList<>();
-        list.add(root);
-
-        while (list.size() > 0) {
-            node = list.remove(0);
-            current--;
+        while (nodeList.size() > 0){
+            BinaryTreeNode node = nodeList.remove(0);
             tmpList.add(node.val);
-            System.out.printf("%-3d", node.val);
-
-            if (node.left != null) {
-                list.add(node.left);
-                next++;
+            currentCnt--;
+            if (node.left != null){
+                nodeList.add(node.left);
+                nextCnt++;
             }
-            if (node.right != null) {
-                list.add(node.right);
-                next++;
+            if (node.right != null){
+                nodeList.add(node.right);
+                nextCnt++;
             }
-
-            if (current ==0) {
-                System.out.println();
-                current = next;
-                next = 0;
+            if (currentCnt == 0){
                 sResultList.add(tmpList);
                 tmpList = new ArrayList<>();
+                currentCnt = nextCnt;
+                nextCnt = 0;
             }
         }
     }
