@@ -6,38 +6,31 @@ import java.util.Stack;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public ListNode FindKthToTail(ListNode head,int k) {
-        return findKthToTail(head, k);
+    public ListNode ReverseList(ListNode head) {
+        return reverseHead(head);
     }
 
-    /**
-     * 输入一个键表，输出该链表中倒数第k 个结点．为了符合大多数人的习惯，
-     * 本题从1开始计数，即链表的尾结点是倒数第1个结点．例如一个链表有6个结点，
-     * 从头结点开始它们的值依次是1、2、3、4、5 6。这个链表的倒数第3个结点是值为4的结点．
-     *
-     * @param head 链表的头结点
-     * @param k    倒数第k个结点
-     * @return 倒数第k个结点
-     */
-    public static ListNode findKthToTail(ListNode head, int k) {
-        if (head == null || k < 1){
-            return null;
+    private static ListNode reverseHead(ListNode head) {
+        if (head == null) {
+            return head;
         }
-        ListNode frontPointer = head;
-        for (int i=0; i<k-1; i++){
-            if (frontPointer.next == null){
-                return null;
-            }else{
-                frontPointer = frontPointer.next;
-            }
+
+        ListNode pre = head;
+        ListNode cur = head.next;
+        ListNode next = null;
+        while(cur != null){
+            next = cur.next;
+            cur.next = pre;
+
+            pre = cur;
+            cur = next;
         }
-        ListNode backPointer = head;
-        while (frontPointer.next != null){
-            frontPointer = frontPointer.next;
-            backPointer = backPointer.next;
-        }
-        return backPointer;
+        head.next = null;
+        head = pre;
+        return head;
     }
+
+
 
     /**
      * 二叉树节点类
