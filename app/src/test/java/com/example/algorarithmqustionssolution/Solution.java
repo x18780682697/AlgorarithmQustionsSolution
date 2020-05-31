@@ -88,27 +88,27 @@ public class Solution {
             return null;
         }
 
-        // 用于记录复制链表的头结点
-        RandomListNode newHead = head.next;
-        // 用于记录当前处理的复制结点
-        RandomListNode pointer = newHead;
-        // 被复制结点的next指向下一个原链表结点
-        head.next = newHead.next;
-        // 指向新的被复制结点
-        head = head.next;
-
-        while (head != null) {
-            // pointer指向复制结点
-            pointer.next = head.next;
+        RandomListNode pointer = head;
+        RandomListNode oldTailNode = pointer;
+        pointer = pointer.next;
+        RandomListNode newHeadNode = pointer, newTailNode = pointer;
+        pointer = pointer.next;
+        boolean isSolveOldNode = true;
+        while (pointer != null){
+            if (isSolveOldNode){
+                oldTailNode.next = pointer;
+                oldTailNode = pointer;
+            }else{
+                newTailNode.next = pointer;
+                newTailNode = pointer;
+            }
+            isSolveOldNode = !isSolveOldNode;
             pointer = pointer.next;
-            // head的下一个指向复制结点的下一个结点，即原来链表的结点
-            head.next = pointer.next;
-            // head指向下一个原来链表上的结点
-            head = pointer.next;
         }
-
+        oldTailNode.next = null;
+        newTailNode.next = null;
         // 返回复制链表的头结点
-        return newHead;
+        return newHeadNode;
     }
 
     /**
