@@ -10,7 +10,7 @@ public class Solution {
 
     public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
         sResultList.clear();
-        printListInverselyUsingIteration(listNode);
+        Solution.printListInverselyUsingRecursion(listNode);
         return sResultList;
     }
 
@@ -21,29 +21,20 @@ public class Solution {
      * @param root 链表头结点
      */
     public static void printListInverselyUsingRecursion(ListNode root) {
-        if (root != null) {
-            printListInverselyUsingRecursion(root.next);
-            System.out.print(root.val + " ");
+        if (root == null){
+            return;
         }
-    }
-
-    /**
-     * 输入个链表的头结点，从尾到头反过来打印出每个结点的值
-     * 使用栈的方式进行
-     *
-     * @param root 链表头结点
-     */
-    public static void printListInverselyUsingIteration(ListNode root) {
         Stack<ListNode> stack = new Stack<>();
-        while (root != null) {
-            stack.push(root);
-            root = root.next;
+        ListNode currentNode = root;
+        // 从头到尾顺序入栈
+        while (currentNode != null){
+            stack.push(currentNode);
+            currentNode = currentNode.next;
         }
-        ListNode tmp;
-        while (!stack.isEmpty()) {
-            tmp = stack.pop();
-            sResultList.add(tmp.val);
-            System.out.print(tmp.val + " ");
+        // 从尾到头顺序出栈
+        while (!stack.isEmpty()){
+            currentNode = stack.pop();
+            sResultList.add(currentNode.val);
         }
     }
 
