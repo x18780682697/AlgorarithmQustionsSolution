@@ -6,23 +6,34 @@ import java.util.Stack;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public ListNode ReverseList(ListNode head) {
-        return reverseHead(head);
+    public ListNode Merge(ListNode list1,ListNode list2) {
+        return merge2(list1, list2);
     }
 
-    private static ListNode reverseHead(ListNode head) {
-        if (head == null){
-            return null;
+    public static ListNode merge2(ListNode head1, ListNode head2) {
+        // 如果第一个链表为空，返回第二个链表头结点
+        if (head1 == null) {
+            return head2;
         }
-        ListNode lastNode = null;
-        ListNode currentNode = head;
-        while (currentNode != null){
-            ListNode nextNode = currentNode.next;
-            currentNode.next = lastNode;
-            lastNode = currentNode;
-            currentNode = nextNode;
+
+        // 如果第二个链表为空，返回第一个链表头结点
+        if (head2 == null) {
+            return head1;
         }
-        return lastNode;
+
+        // 记录两个链表中头部较小的结点
+        ListNode tmp = head1;
+        if (tmp.val < head2.val) {
+            // 如果第一个链表的头结点小，就递归处理第一个链表的下一个结点和第二个链表的头结点
+            tmp.next = merge2(head1.next, head2);
+        } else {
+            // 如果第二个链表的头结点小，就递归处理第一个链表的头结点和第二个链表的头结点的下一个结点
+            tmp = head2;
+            tmp.next = merge2(head1, head2.next);
+        }
+
+        // 返回处理结果
+        return tmp;
     }
 
     /**
