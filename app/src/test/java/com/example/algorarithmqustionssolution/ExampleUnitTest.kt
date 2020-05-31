@@ -17,9 +17,11 @@ class ExampleUnitTest {
     fun test() {
         ExampleGraph.createAdjMatrix()?.apply {
             dfsFromFirstVertex()
+            bfsFromFirstVertex()
         }
         ExampleGraph.createAdjList()?.apply {
             dfsFromFirstVertex()
+            bfsFromFirstVertex()
         }
         assertEquals(true, true)
     }

@@ -1,6 +1,8 @@
 package com.example.algorarithmqustionssolution.graph;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 图的邻接矩阵表存储方式
@@ -89,6 +91,43 @@ public class AdjacencyListGraph {
             }
         }
         return index;
+    }
+
+    public void bfsFromFirstVertex(){
+        Arrays.fill(visitedArray, 0);
+        System.out.print("邻接表广度优先遍历\n");
+        bfs1(0);
+        System.out.print("\n");
+    }
+
+    /**
+     * 广度优先遍历
+     */
+    public void bfs1(int v){
+        List<Vertex> currentVertexList = new ArrayList<>();
+        List<Vertex> nextVertexList = new ArrayList<>();
+        currentVertexList.add(vertexArray[v]);
+        while (currentVertexList.size() > 0){
+            Vertex vertex = currentVertexList.remove(0);
+            int index = getIndexByValue(vertex.value);
+            if (visitedArray[index] == 0){
+                System.out.print(vertex.value + " ");
+                visitedArray[index] = 1;
+            }
+            Vertex nextVertex = vertex.next;
+            while (nextVertex != null){
+                int tmpIndex = getIndexByValue(nextVertex.value);
+                if (visitedArray[tmpIndex] == 0){
+                    nextVertexList.add(vertexArray[tmpIndex]);
+                }
+                nextVertex = nextVertex.next;
+            }
+            if (currentVertexList.size() == 0){
+                List<Vertex> tmpList = currentVertexList;
+                currentVertexList = nextVertexList;
+                nextVertexList = tmpList;
+            }
+        }
     }
 
 }

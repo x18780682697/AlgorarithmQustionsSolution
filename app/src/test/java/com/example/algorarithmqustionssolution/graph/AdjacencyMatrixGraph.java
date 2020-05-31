@@ -1,6 +1,10 @@
 package com.example.algorarithmqustionssolution.graph;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 图的邻接矩阵存储方式
@@ -45,9 +49,6 @@ public class AdjacencyMatrixGraph {
         }
     }
 
-    /**
-     * 深度优先遍历
-     */
     public void dfsFromFirstVertex(){
         Arrays.fill(visitedArray, 0);
         System.out.print("邻接矩阵深度优先遍历\n");
@@ -67,6 +68,61 @@ public class AdjacencyMatrixGraph {
         for (int i=0; i<vertexArray.length; i++){
             if (adj[v][i] == 1 && visitedArray[i] == 0){
                 dfs(i);
+            }
+        }
+    }
+
+    public void bfsFromFirstVertex(){
+        Arrays.fill(visitedArray, 0);
+        System.out.print("邻接矩阵广度优先遍历\n");
+        bfs(0);
+        System.out.print("\n");
+    }
+
+    /**
+     * 广度优先遍历
+     */
+    public void bfs(int v){
+        List<Integer> currentVertexList = new ArrayList<>();
+        List<Integer> nextVertexList = new ArrayList<>();
+        currentVertexList.add(v);
+        while (currentVertexList.size() > 0){
+            Integer vertex = currentVertexList.remove(0);
+            // 仅当当前顶点未访问过时才进行访问
+            if (visitedArray[vertex] == 0){
+                System.out.print(vertex + " ");
+                visitedArray[vertex] = 1;
+            }
+            // 将当前顶点邻接的顶点添加到下轮待访问节点列表
+            for (int i=0; i<vertexArray.length; i++){
+                if (adj[vertex][i] == 1 && visitedArray[i] == 0){
+                    nextVertexList.add(vertexArray[i]);
+                }
+            }
+            if (currentVertexList.size() == 0){
+                List<Integer> tmpList = currentVertexList;
+                currentVertexList = nextVertexList;
+                nextVertexList = tmpList;
+            }
+        }
+    }
+
+    /**
+     * 广度优先遍历
+     */
+    public void bfs1(int v){
+        List<Integer> queue = new LinkedList<>();
+        System.out.print(v + " ");
+        visitedArray[v] = 1;
+        queue.add(v);
+        while (queue.size() > 0){
+            Integer vertex = queue.remove(0);
+            for (int i=0; i<vertexArray.length; i++){
+                if (adj[vertex][i] == 1 && visitedArray[i] == 0){
+                    System.out.print(i + " ");
+                    visitedArray[i] = 1;
+                    queue.add(i);
+                }
             }
         }
     }
