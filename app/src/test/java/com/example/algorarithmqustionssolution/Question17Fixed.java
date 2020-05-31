@@ -20,30 +20,30 @@ public class Question17Fixed {
 //        BinaryTreeNode right;
 //    }
 
-    public static boolean HasSubtree(BinaryTreeNode root1,BinaryTreeNode root2) {
-        if(root2==null) return false;
-        if(root1==null && root2!=null) return false;
-        boolean flag = false;
-        if(root1.value==root2.value){
-            flag = isSubTree(root1,root2);
-        }
-        if(!flag){
-            flag = HasSubtree(root1.left, root2);
-            if(!flag){
-                flag = HasSubtree(root1.right, root2);
-            }
-        }
-        return flag;
-    }
+//    public static boolean HasSubtree(BinaryTreeNode root1,BinaryTreeNode root2) {
+//        if(root2==null) return false;
+//        if(root1==null && root2!=null) return false;
+//        boolean flag = false;
+//        if(root1.value==root2.value){
+//            flag = isSubTree(root1,root2);
+//        }
+//        if(!flag){
+//            flag = HasSubtree(root1.left, root2);
+//            if(!flag){
+//                flag = HasSubtree(root1.right, root2);
+//            }
+//        }
+//        return flag;
+//    }
 
-    private static boolean isSubTree(BinaryTreeNode root1, BinaryTreeNode root2) {
-        if(root2==null) return true;
-        if(root1==null && root2!=null) return false;
-        if(root1.value==root2.value){
-            return isSubTree(root1.left, root2.left) && isSubTree(root1.right, root2.right);
-        }else{
-            return false;
-        }
-    }
+//    private static boolean isSubTree(BinaryTreeNode root1, BinaryTreeNode root2) {
+//        if(root2==null) return true;
+//        if(root1==null && root2!=null) return false;
+//        if(root1.value==root2.value){
+//            return isSubTree(root1.left, root2.left) && isSubTree(root1.right, root2.right);
+//        }else{
+//            return false;
+//        }
+//    }
 
 }

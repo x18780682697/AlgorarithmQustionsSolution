@@ -16,8 +16,8 @@ object BinaryTreeUtil {
             null
         }else{
             BinaryTreeNode().apply {
-                value = currentValue
-                left = createByPreOrderArray(array, iterator)
+                `val` = currentValue
+                `left` = createByPreOrderArray(array, iterator)
                 right = createByPreOrderArray(array, iterator)
             }
         }
@@ -28,7 +28,7 @@ object BinaryTreeUtil {
      */
     fun preOrderTraversal(rootNode: BinaryTreeNode?){
         rootNode?.run {
-            print("${rootNode.value},")
+            print("${rootNode.`val`},")
             preOrderTraversal(rootNode.left)
             preOrderTraversal(rootNode.right)
         }
@@ -40,7 +40,7 @@ object BinaryTreeUtil {
     fun inOrderTraversal(rootNode: BinaryTreeNode?){
         rootNode?.run {
             inOrderTraversal(rootNode.left)
-            print("${rootNode.value},")
+            print("${rootNode.`val`},")
             inOrderTraversal(rootNode.right)
         }
     }
@@ -52,7 +52,7 @@ object BinaryTreeUtil {
         rootNode?.run {
             postOrderTraversal(rootNode.left, resultList)
             postOrderTraversal(rootNode.right, resultList)
-            rootNode.value.apply {
+            rootNode.`val`.apply {
                 print("$this,")
             }.apply {
                 resultList?.add(this)
