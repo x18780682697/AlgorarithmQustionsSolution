@@ -15,14 +15,17 @@ class ExampleUnitTest {
      */
     @Test
     fun test() {
-        ExampleGraph.createAdjMatrix()?.apply {
-            dfsFromFirstVertex()
-            bfsFromFirstVertex()
-        }
-        ExampleGraph.createAdjList()?.apply {
-            dfsFromFirstVertex()
-            bfsFromFirstVertex()
-        }
+//        ExampleGraph.createAdjMatrix()?.apply {
+//            dfsFromFirstVertex()
+//            bfsFromFirstVertex()
+//        }
+//        ExampleGraph.createAdjList()?.apply {
+//            dfsFromFirstVertex()
+//            bfsFromFirstVertex()
+//        }
+        val testCharArray = "ABCESFCSADEE".toCharArray()
+        val testCharArray2 = "ABCCED".toCharArray()
+        Solution.hasPath(testCharArray, 3, 4, testCharArray2)
         assertEquals(true, true)
     }
 
