@@ -24,28 +24,19 @@ public class Solution {
 
     private static BinaryTreeNode kthNodeCore(BinaryTreeNode root, int[] k) {
         BinaryTreeNode result = null;
-
-        // 先成左子树中找
-        if (root.left != null) {
-            result =  kthNodeCore(root.left, k);
+        if (root.left != null){
+            result = kthNodeCore(root.left, k);
         }
-
-        // 如果在左子树中没有找到
-        if (result == null) {
-            // 说明当前的根结点是所要找的结点
-            if(k[0] == 1) {
-                result = root;
-            } else {
-                // 当前的根结点不是要找的结点，但是已经找过了，所以计数器减一
+        if (result == null){
+            if (k[0] != 1){
                 k[0]--;
+            }else{
+                result = root;
             }
         }
-
-        // 根结点以及根结点的左子树都没有找到，则找其右子树
-        if (result == null && root.right != null) {
+        if (result == null && root.right != null){
             result = kthNodeCore(root.right, k);
         }
-
         return result;
     }
 
