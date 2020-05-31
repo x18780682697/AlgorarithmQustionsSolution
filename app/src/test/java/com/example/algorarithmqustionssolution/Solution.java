@@ -11,26 +11,19 @@ public class Solution {
     }
 
     private static ListNode reverseHead(ListNode head) {
-        if (head == null) {
-            return head;
+        if (head == null){
+            return null;
         }
-
-        ListNode pre = head;
-        ListNode cur = head.next;
-        ListNode next = null;
-        while(cur != null){
-            next = cur.next;
-            cur.next = pre;
-
-            pre = cur;
-            cur = next;
+        ListNode lastNode = null;
+        ListNode currentNode = head;
+        while (currentNode != null){
+            ListNode nextNode = currentNode.next;
+            currentNode.next = lastNode;
+            lastNode = currentNode;
+            currentNode = nextNode;
         }
-        head.next = null;
-        head = pre;
-        return head;
+        return lastNode;
     }
-
-
 
     /**
      * 二叉树节点类
