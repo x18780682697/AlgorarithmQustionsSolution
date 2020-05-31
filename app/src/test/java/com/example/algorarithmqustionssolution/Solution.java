@@ -1,56 +1,50 @@
 package com.example.algorarithmqustionssolution;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Stack;
 
 @SuppressWarnings("unused")
 public class Solution {
 
+    public static ArrayList<Integer> sResultList = new ArrayList<>();
+
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+        sResultList.clear();
+        printListInverselyUsingIteration(listNode);
+        return sResultList;
+    }
+
     /**
-     * 题目：地上有个m行n列的方格。一个机器人从坐标(0,0)的格子开始移动，
-     * 它每一次可以向左、右、上、下移动一格，但不能进入行坐标和列坐标的数
-     * 位之和大于k的格子。例如，当k为18时，机器人能够进入方格(35,37)，
-     * 因为3+5+3+7=18.但它不能进入方格(35,38)，因为3+5+3+8=19.
-     * 请问该机器人能够达到多少格子？
+     * 输入个链表的头结点，从尾到头反过来打印出每个结点的值
+     * 使用递归的方式进行
      *
-     * @param threshold 约束值
-     * @param rows      方格的行数
-     * @param cols      方格的列数
-     * @return 最多可走的方格
+     * @param root 链表头结点
      */
-    public static int movingCount(int threshold, int rows, int cols) {
-        if (rows < 0 || cols < 0){
-            return 0;
+    public static void printListInverselyUsingRecursion(ListNode root) {
+        if (root != null) {
+            printListInverselyUsingRecursion(root.next);
+            System.out.print(root.val + " ");
         }
-        boolean[] visitedArray = new boolean[rows*cols];
-        return movingCountCore(threshold, rows, cols, 0, 0, visitedArray);
     }
 
-    private static int movingCountCore(int threshold, int rows, int cols, int row, int col, boolean[] visitedArray) {
-        if (row < 0 || row >= rows || col < 0 || col >= cols){
-            return 0;
+    /**
+     * 输入个链表的头结点，从尾到头反过来打印出每个结点的值
+     * 使用栈的方式进行
+     *
+     * @param root 链表头结点
+     */
+    public static void printListInverselyUsingIteration(ListNode root) {
+        Stack<ListNode> stack = new Stack<>();
+        while (root != null) {
+            stack.push(root);
+            root = root.next;
         }
-        int count = 0;
-        int where = row*cols+col;
-        if (!visitedArray[where] && (countDigitSum(row) + countDigitSum(col)) <= threshold){
-            visitedArray[where] = true;
-            count =  1 + movingCountCore(threshold, rows, cols, row+1, col, visitedArray)
-                    + movingCountCore(threshold, rows, cols, row-1, col, visitedArray)
-                    + movingCountCore(threshold, rows, cols, row, col+1, visitedArray)
-                    + movingCountCore(threshold, rows, cols, row, col-1, visitedArray);
+        ListNode tmp;
+        while (!stack.isEmpty()) {
+            tmp = stack.pop();
+            sResultList.add(tmp.val);
+            System.out.print(tmp.val + " ");
         }
-        return count;
-    }
-
-    private static int countDigitSum(int num) {
-        int result = 0;
-        int tmpVal = num;
-        while (tmpVal > 0){
-            result += tmpVal % 10;
-            tmpVal = tmpVal / 10;
-        }
-        return result;
     }
 
     /**
