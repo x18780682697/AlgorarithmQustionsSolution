@@ -18,40 +18,30 @@ public class Solution {
      * @return 找到的公共结点，没有返回null
      */
     public static ListNode findFirstCommonNode(ListNode head1, ListNode head2) {
-        int length1 = getListLength(head1);
-        int length2 = getListLength(head2);
-
-        int diff = length1 - length2;
-        ListNode longListHead = head1;
-        ListNode shortListHead = head2;
-
-        if (diff < 0) {
-            longListHead = head2;
-            shortListHead = head1;
-            diff = length2 - length1;
+        int len1 = getLinkListLen(head1);
+        int len2 = getLinkListLen(head2);
+        boolean list1AboveList2 = len1 > len2;
+        ListNode longList = list1AboveList2 ? head1 : head2;
+        ListNode shortList = list1AboveList2 ? head2 : head1;
+        // 长链表和短链表对其
+        for (int i=0; i<Math.abs(len1-len2); i++){
+            longList = longList.next;
         }
-
-        for (int i = 0; i < diff; i++) {
-            longListHead = longListHead.next;
+        // 开始寻找公共节点
+        while (longList != null && shortList != null && longList.val != shortList.val){
+            longList = longList.next;
+            shortList = shortList.next;
         }
-
-        while (longListHead != null && shortListHead != null && longListHead != shortListHead) {
-            longListHead = longListHead.next;
-            shortListHead = shortListHead.next;
-        }
-
-        // 返回第一个相同的公共结点，如果没有返回null
-        return longListHead;
+        return longList;
     }
 
-    private static int getListLength(ListNode head) {
-        int result = 0;
-        while (head != null) {
-            result++;
-            head = head.next;
+    private static int getLinkListLen(ListNode node){
+        int len = 0;
+        while (node != null){
+            len++;
+            node = node.next;
         }
-
-        return result;
+        return len;
     }
 
     /**
