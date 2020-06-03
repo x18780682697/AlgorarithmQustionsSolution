@@ -9,25 +9,24 @@ import java.util.Queue;
 public class Solution {
 
     public static ListNode deleteDuplication(ListNode pHead) {
-
-        ListNode first = new ListNode(-1);//设置一个trick
-
-        first.next = pHead;
-
-        ListNode p = pHead;
-        ListNode last = first;
-        while (p != null && p.next != null) {
-            if (p.val == p.next.val) {
-                int val = p.val;
-                while (p!= null&&p.val == val)
-                    p = p.next;
-                last.next = p;
-            } else {
-                last = p;
-                p = p.next;
+        ListNode fakeHead = new ListNode(-1);
+        fakeHead.next = pHead;
+        ListNode pointer = pHead;
+        ListNode lastNode = fakeHead;
+        while (pointer != null && pointer.next != null){
+            if (pointer.val == pointer.next.val){
+                int curVal = pointer.val;
+                // 不断迭代用以移除重复结点
+                while (pointer != null && curVal == pointer.val){
+                    pointer = pointer.next;
+                }
+                lastNode.next = pointer;
+            }else{
+                lastNode = pointer;
+                pointer = pointer.next;
             }
         }
-        return first.next;
+        return fakeHead.next;
     }
 
     /**
