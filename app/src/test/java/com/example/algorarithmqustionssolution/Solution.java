@@ -8,69 +8,26 @@ import java.util.Queue;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public boolean IsBalanced_Solution(TreeNode root) {
-        return isBalanced2(NodeTranslateUtil.toBinaryTreeNode(root));
-    }
+    public static ListNode deleteDuplication(ListNode pHead) {
 
-    public static int treeDepth(BinaryTreeNode root) {
-        if (root == null) {
-            return 0;
-        }
+        ListNode first = new ListNode(-1);//设置一个trick
 
-        int left = treeDepth(root.left);
-        int right = treeDepth(root.right);
+        first.next = pHead;
 
-        return left > right ? (left + 1) : (right + 1);
-    }
-
-    /**
-     * 判断是否是平衡二叉树，第一种解法
-     *
-     * @param root
-     * @return
-     */
-    public static boolean isBalanced(BinaryTreeNode root) {
-        if (root == null) {
-            return true;
-        }
-
-        int left = treeDepth(root.left);
-        int right = treeDepth(root.right);
-        int diff = left - right;
-        if (diff > 1 || diff < -1) {
-            return false;
-        }
-
-        return isBalanced(root.left) && isBalanced(root.right);
-    }
-
-
-    /**
-     * 判断是否是平衡二叉树，第二种解法
-     *
-     * @param root
-     * @return
-     */
-    public static boolean isBalanced2(BinaryTreeNode root) {
-        int[] depth = new int[1];
-        return isBalancedHelper(root, depth);
-    }
-
-    public static boolean isBalancedHelper(BinaryTreeNode root, int[] depth) {
-        if (root == null){
-            depth[0] = 0;
-            return true;
-        }
-        int[] left = new int[1];
-        int[] right = new int[1];
-        if (isBalancedHelper(root.left, left) && isBalancedHelper(root.right, right)){
-            int diffAbs = Math.abs(left[0] - right[0]);
-            if (diffAbs <= 1){
-                depth[0] = 1 + (Math.max(left[0], right[0]));
-                return true;
+        ListNode p = pHead;
+        ListNode last = first;
+        while (p != null && p.next != null) {
+            if (p.val == p.next.val) {
+                int val = p.val;
+                while (p!= null&&p.val == val)
+                    p = p.next;
+                last.next = p;
+            } else {
+                last = p;
+                p = p.next;
             }
         }
-        return false;
+        return first.next;
     }
 
     /**
