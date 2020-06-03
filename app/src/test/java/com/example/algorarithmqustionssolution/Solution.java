@@ -4,29 +4,56 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 @SuppressWarnings("unused")
 public class Solution {
 
-    public static ListNode deleteDuplication(ListNode pHead) {
-        ListNode fakeHead = new ListNode(-1);
-        fakeHead.next = pHead;
-        ListNode pointer = pHead;
-        ListNode lastNode = fakeHead;
-        while (pointer != null && pointer.next != null){
-            if (pointer.val == pointer.next.val){
-                int curVal = pointer.val;
-                // 不断迭代用以移除重复结点
-                while (pointer != null && curVal == pointer.val){
-                    pointer = pointer.next;
-                }
-                lastNode.next = pointer;
-            }else{
-                lastNode = pointer;
-                pointer = pointer.next;
-            }
+    Stack<Integer> stack1 = new Stack<Integer>();
+    Stack<Integer> stack2 = new Stack<Integer>();
+    private MList<Integer> mQueue = new MList<>();
+
+    public void push(int node) {
+        mQueue.appendTail(node);
+    }
+
+    public int pop() {
+        return mQueue.deleteHead();
+    }
+
+    public static class MList<T> {
+        // 插入栈，只用于插入的数据
+        private Stack<T> stack1 = new Stack<>();
+        // 弹出栈，只用于弹出数据
+        private Stack<T> stack2 = new Stack<>();
+
+        public MList() {
         }
-        return fakeHead.next;
+
+        // 添加操作，成在队列尾部插入结点
+        public void appendTail(T t) {
+            stack1.add(t);
+        }
+
+        // 删除操作，在队列头部删除结点
+        public T deleteHead() {
+
+            // 先判断弹出栈是否为空，如果为空就将插入栈的所有数据弹出栈，
+            // 并且将弹出的数据压入弹出栈中
+            if (stack2.isEmpty()) {
+                while (!stack1.isEmpty()) {
+                    stack2.add(stack1.pop());
+                }
+            }
+
+            // 如果弹出栈中还没有数据就抛出异常
+            if (stack2.isEmpty()) {
+                throw new RuntimeException("No more element.");
+            }
+
+            // 返回弹出栈的栈顶元素，对应的就是队首元素。
+            return stack2.pop();
+        }
     }
 
     /**
