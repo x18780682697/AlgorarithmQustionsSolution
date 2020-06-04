@@ -15,18 +15,9 @@ class ExampleUnitTest {
      */
     @Test
     fun test() {
-//        ExampleGraph.createAdjMatrix()?.apply {
-//            dfsFromFirstVertex()
-//            bfsFromFirstVertex()
-//        }
-//        ExampleGraph.createAdjList()?.apply {
-//            dfsFromFirstVertex()
-//            bfsFromFirstVertex()
-//        }
-        val testCharArray = "ABCESFCSADEE".toCharArray()
-        val testCharArray2 = "ABCCED".toCharArray()
-        Solution.hasPath(testCharArray, 3, 4, testCharArray2)
-        assertEquals(true, true)
+        assertEquals("a2bc4a3", TestSome.zipStr("aabccccaaa"))
+        assertEquals("ds2df2d3fs", TestSome.zipStr("dssdffdddfs"))
+        assertEquals("ew3f3wdwe2r3", TestSome.zipStr("ewwwfffwdweerrr"))
     }
 
 //    /**

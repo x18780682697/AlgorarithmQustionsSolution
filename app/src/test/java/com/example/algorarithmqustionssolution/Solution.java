@@ -6,42 +6,47 @@ import java.util.Stack;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public ListNode FindFirstCommonNode(ListNode pHead1, ListNode pHead2) {
-        return findFirstCommonNode(pHead1, pHead2);
-    }
+    public static ListNode meetingNode(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
 
-    /**
-     * 找两个结点的第一个公共结点，如果没有找到返回null，方法比较好，考虑了两个链表中有null的情况
-     *
-     * @param head1 第一个链表
-     * @param head2 第二个链表
-     * @return 找到的公共结点，没有返回null
-     */
-    public static ListNode findFirstCommonNode(ListNode head1, ListNode head2) {
-        int len1 = getLinkListLen(head1);
-        int len2 = getLinkListLen(head2);
-        boolean list1AboveList2 = len1 > len2;
-        ListNode longList = list1AboveList2 ? head1 : head2;
-        ListNode shortList = list1AboveList2 ? head2 : head1;
-        // 长链表和短链表对其
-        for (int i=0; i<Math.abs(len1-len2); i++){
-            longList = longList.next;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                break;
+            }
         }
-        // 开始寻找公共节点
-        while (longList != null && shortList != null && longList.val != shortList.val){
-            longList = longList.next;
-            shortList = shortList.next;
-        }
-        return longList;
-    }
 
-    private static int getLinkListLen(ListNode node){
-        int len = 0;
-        while (node != null){
-            len++;
-            node = node.next;
+        // 链表中没有环
+        if (fast == null || fast.next == null) {
+            return null;
         }
-        return len;
+        return fast;
+    }
+    public ListNode EntryNodeOfLoop(ListNode pHead) {
+        ListNode meetingNode=meetingNode(pHead);
+        if(meetingNode==null)
+            return null;
+//      得到环中的节点个数
+        int nodesInLoop=1;
+        ListNode p1=meetingNode;
+        while(p1.next!=meetingNode){
+            p1=p1.next;
+            ++nodesInLoop;
+        }
+//      移动p1
+        p1=pHead;
+        for(int i=0;i<nodesInLoop;i++){
+            p1=p1.next;
+        }
+//      移动p1，p2
+        ListNode p2=pHead;
+        while(p1!=p2){
+            p1=p1.next;
+            p2=p2.next;
+        }
+        return p1;
     }
 
     /**
