@@ -15,9 +15,17 @@ class ExampleUnitTest {
      */
     @Test
     fun test() {
-        assertEquals("a2bc4a3", TestSome.zipStr("aabccccaaa"))
-        assertEquals("ds2df2d3fs", TestSome.zipStr("dssdffdddfs"))
-        assertEquals("ew3f3wdwe2r3", TestSome.zipStr("ewwwfffwdweerrr"))
+        val head = ListNode(0)
+        val node1 = ListNode(1)
+        head.next = node1
+        val node2 = ListNode(2)
+        node1.next = node2
+        val node3 = ListNode(3)
+        node2.next = node3
+        val node4 = ListNode(4)
+        node3.next = node4
+        node4.next = node2
+        assertEquals(node2, Solution.EntryNodeOfLoop(head))
     }
 
 //    /**

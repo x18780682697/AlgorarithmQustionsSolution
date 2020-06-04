@@ -1,52 +1,56 @@
 package com.example.algorarithmqustionssolution;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 @SuppressWarnings("unused")
 public class Solution {
 
-    public static ListNode meetingNode(ListNode head) {
-        ListNode fast = head;
-        ListNode slow = head;
-
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
+    public static ListNode findMeetingNode(ListNode head) {
+        ListNode fast= head, slow = head;
+        while (fast != null && slow != null){
+            fast = fast.next;
+            if (fast != null){
+                fast = fast.next;
+            }
             slow = slow.next;
-            if (fast == slow) {
+            if (fast == slow){
                 break;
             }
         }
-
-        // 链表中没有环
-        if (fast == null || fast.next == null) {
-            return null;
-        }
         return fast;
     }
-    public ListNode EntryNodeOfLoop(ListNode pHead) {
-        ListNode meetingNode=meetingNode(pHead);
-        if(meetingNode==null)
+
+    public static ListNode EntryNodeOfLoop(ListNode pHead) {
+        // 寻找相遇节点
+        ListNode meetingNode = findMeetingNode(pHead);
+        if (meetingNode == null){
             return null;
-//      得到环中的节点个数
-        int nodesInLoop=1;
-        ListNode p1=meetingNode;
-        while(p1.next!=meetingNode){
-            p1=p1.next;
-            ++nodesInLoop;
         }
-//      移动p1
-        p1=pHead;
-        for(int i=0;i<nodesInLoop;i++){
-            p1=p1.next;
+        // 计数环中节点数量
+        int nodeNum = 1;
+        ListNode nodePointer = meetingNode;
+        while (nodePointer != null){
+            nodePointer = nodePointer.next;
+            if (nodePointer == meetingNode){
+                break;
+            }
+            nodeNum++;
         }
-//      移动p1，p2
-        ListNode p2=pHead;
-        while(p1!=p2){
-            p1=p1.next;
-            p2=p2.next;
+        // 根据节点数量找环入口
+        ListNode front=pHead, back = pHead;
+        for (int i=0; i<nodeNum; i++){
+            front = front.next;
         }
-        return p1;
+        while (front != back){
+            front = front.next;
+            back = back.next;
+            if (front == back){
+                break;
+            }
+        }
+        return front;
     }
 
     /**
