@@ -29,14 +29,14 @@ public class Solution {
             return null;
         }
         // 计数环中节点数量
-        int nodeNum = 1;
+        int nodeNum = 0;
         ListNode nodePointer = meetingNode;
         while (nodePointer != null){
             nodePointer = nodePointer.next;
+            nodeNum++;
             if (nodePointer == meetingNode){
                 break;
             }
-            nodeNum++;
         }
         // 根据节点数量找环入口
         ListNode front=pHead, back = pHead;
