@@ -1,57 +1,79 @@
 package com.example.algorarithmqustionssolution;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 @SuppressWarnings("unused")
 public class Solution {
 
-    public static ListNode findMeetingNode(ListNode head) {
-        ListNode fast= head, slow = head;
-        while (fast != null && slow != null){
-            fast = fast.next;
-            if (fast != null){
-                fast = fast.next;
-            }
-            slow = slow.next;
-            if (fast == slow){
-                break;
-            }
-        }
-        return fast;
+    MinStack mMinStack = new MinStack();
+
+    public void push(int node) {
+        mMinStack.push(node);
     }
 
-    public static ListNode EntryNodeOfLoop(ListNode pHead) {
-        // 寻找相遇节点
-        ListNode meetingNode = findMeetingNode(pHead);
-        if (meetingNode == null){
-            return null;
+    public void pop() {
+        try {
+            mMinStack.pop();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        // 计数环中节点数量
-        int nodeNum = 0;
-        ListNode nodePointer = meetingNode;
-        while (nodePointer != null){
-            nodePointer = nodePointer.next;
-            nodeNum++;
-            if (nodePointer == meetingNode){
-                break;
-            }
-        }
-        // 根据节点数量找环入口
-        ListNode front=pHead, back = pHead;
-        for (int i=0; i<nodeNum; i++){
-            front = front.next;
-        }
-        while (front != back){
-            front = front.next;
-            back = back.next;
-            if (front == back){
-                break;
-            }
-        }
-        return front;
     }
+
+    public int top() {
+        try {
+            return mMinStack.peek();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int min() throws Exception {
+        return mMinStack.min();
+    }
+
+    public class MinStack {
+
+        private Stack<Integer> stack = new Stack<Integer>();
+        private Stack<Integer> minStack = new Stack<Integer>(); //辅助栈：栈顶永远保存stack中当前的最小的元素
+
+
+        public void push(int data) {
+            stack.push(data);  //直接往栈中添加数据
+
+            //在辅助栈中需要做判断
+            if (minStack.size() == 0 || data < minStack.peek()) {
+                minStack.push(data);
+            } else {
+                minStack.add(minStack.peek());   //【核心代码】peek方法返回的是栈顶的元素
+            }
+        }
+
+        public int pop() throws Exception {
+            if (stack.size() == 0) {
+                throw new Exception("栈中为空");
+            }
+
+            int data = stack.pop();
+            minStack.pop();  //核心代码
+            return data;
+        }
+
+        public int min() throws Exception {
+            if (minStack.size() == 0) {
+                throw new Exception("栈中空了");
+            }
+            return minStack.peek();
+        }
+
+        public int peek() throws Exception {
+            if (stack.size() == 0) {
+                throw new Exception("栈中空了");
+            }
+            return stack.peek();
+        }
+    }
+
 
     /**
      * 二叉树节点类
