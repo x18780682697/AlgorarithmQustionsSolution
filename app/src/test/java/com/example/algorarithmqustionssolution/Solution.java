@@ -5,71 +5,24 @@ import java.util.Stack;
 @SuppressWarnings("unused")
 public class Solution {
 
-    MinStack mMinStack = new MinStack();
-
-    public void push(int node) {
-        mMinStack.push(node);
+    public boolean IsPopOrder(int [] pushA,int [] popA) {
+        return sequenseIsPop(pushA, popA);
     }
 
-    public void pop() {
-        try {
-            mMinStack.pop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    //方法：data1数组的顺序表示入栈的顺序。现在判断data2的这种出栈顺序是否正确
+    public static boolean sequenseIsPop(int[] data1, int[] data2) {
+        Stack<Integer> stack = new Stack<Integer>(); //这里需要用到辅助栈
 
-    public int top() {
-        try {
-            return mMinStack.peek();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
+        for (int i = 0, j = 0; i < data1.length; i++) {
+            stack.push(data1[i]);
 
-    public int min() throws Exception {
-        return mMinStack.min();
-    }
-
-    public class MinStack {
-
-        private Stack<Integer> stack = new Stack<Integer>();
-        private Stack<Integer> minStack = new Stack<Integer>(); //辅助栈：栈顶永远保存stack中当前的最小的元素
-
-
-        public void push(int data) {
-            stack.push(data);
-            if (minStack.size() == 0 || data < minStack.peek()){
-                minStack.push(data);
-            }else{
-                minStack.push(minStack.peek());
+            while (stack.size() > 0 && stack.peek() == data2[j]) {
+                stack.pop();
+                j++;
             }
         }
-
-        public int pop() throws Exception {
-            if (stack.size() == 0){
-                throw new RuntimeException("no more");
-            }
-            minStack.pop();
-            return stack.pop();
-        }
-
-        public int min() throws Exception {
-            if (stack.size() == 0){
-                throw new RuntimeException("no more");
-            }
-            return minStack.peek();
-        }
-
-        public int peek() throws Exception {
-            if (stack.size() == 0){
-                throw new RuntimeException("no more");
-            }
-            return stack.peek();
-        }
+        return stack.size() == 0;
     }
-
 
     /**
      * 二叉树节点类
