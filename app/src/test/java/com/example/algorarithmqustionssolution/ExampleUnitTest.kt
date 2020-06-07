@@ -11,12 +11,12 @@ import org.junit.Assert.*
 class ExampleUnitTest {
 
     /**
-     * 第22题 test
+     * test
      */
     @Test
     fun test() {
-        Solution.IsPopOrder(intArrayOf(1,2,3,4,5), intArrayOf(2,1))
-        assertEquals(true, Solution.IsPopOrder(intArrayOf(1,2,3,4,5), intArrayOf(5,4,3,2,1)))
+        Solution.maxInWindows(intArrayOf(2,3,4,2,6,2,5,1), 3)
+        assertEquals(true, true)
     }
 
 //    /**

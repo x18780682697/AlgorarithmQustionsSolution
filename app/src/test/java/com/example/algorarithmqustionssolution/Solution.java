@@ -9,65 +9,47 @@ import java.util.Stack;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public ArrayList<Integer> maxInWindows(int [] num, int size)
+    public static ArrayList<Integer> maxInWindows(int [] num, int size)
     {
         ArrayList<Integer> resultList = new ArrayList<>();
-        // 数据总量不可少于滑动窗口大小
-        if (num.length >= size){
-            List<Integer> dataList = new ArrayList<>();
-            for (int value : num) {
-                dataList.add(value);
-            }
-            resultList.addAll(maxInWindowsCore(dataList, size));
+        if (num == null || num.length == 0 || size <= 0){
+            return resultList;
         }
+        if (num.length < size){
+            return resultList;
+        }
+        List<Integer> dataList = new ArrayList<>();
+        for (int value : num) {
+            dataList.add(value);
+        }
+        resultList.addAll(maxInWindowsCore(dataList, size));
         return resultList;
     }
 
     private static List<Integer> maxInWindowsCore(List<Integer> data, int size) {
-        List<Integer> windowMax = new LinkedList<>();
-
-        // 条件检查
-        if (data == null || size < 1 || data.size() < 1) {
-            return windowMax;
-        }
-
-        Deque<Integer> idx = new LinkedList<>();
-
-        // 窗口还没有被填满时，找最大值的索引
-        for (int i = 0; i < size && i < data.size(); i++) {
-            // 如果索引对应的值比之前存储的索引值对应的值大或者相等，就删除之前存储的值
-            while (!idx.isEmpty() && data.get(i) >= data.get(idx.getLast())) {
-                idx.removeLast();
+        List<Integer> resultList = new ArrayList<>();
+        Deque<Integer> queue = new LinkedList<>();
+        // 根据size大小填充滑动窗口
+        for (int i=0; i<size; i++){
+            while (!queue.isEmpty() && data.get(i) >= data.get(queue.getLast())){
+                queue.removeLast();
             }
-
-            //  添加索引
-            idx.addLast(i);
+            queue.add(i);
         }
-
-        // 窗口已经被填满了
-        for (int i = size; i < data.size(); i++) {
-            // 第一个窗口的最大值保存
-            windowMax.add(data.get(idx.getFirst()));
-
-            // 如果索引对应的值比之前存储的索引值对应的值大或者相等，就删除之前存储的值
-            while (!idx.isEmpty() && data.get(i) >= data.get(idx.getLast())) {
-                idx.removeLast();
+        // 滑动窗口逐步从左至右滑动
+        for (int i=size; i<data.size(); i++){
+            resultList.add(data.get(queue.getFirst()));
+            while (!queue.isEmpty() && data.get(i) >= data.get(queue.getLast())){
+                queue.removeLast();
             }
-
-            // 删除已经滑出窗口的数据对应的下标
-            if (!idx.isEmpty() && idx.getFirst() <= (i - size)) {
-                idx.removeFirst();
+            if (!queue.isEmpty() && queue.getFirst() <= i-size){
+                queue.removeFirst();
             }
-
-            // 可能的最大的下标索引入队
-            idx.addLast(i);
+            queue.add(i);
         }
-
-        // 最后一个窗口最大值入队
-        windowMax.add(data.get(idx.getFirst()));
-
-        return windowMax;
-
+        // 额外加上最后1个窗口的最大元素
+        resultList.add(data.get(queue.getFirst()));
+        return resultList;
     }
 
     /**
