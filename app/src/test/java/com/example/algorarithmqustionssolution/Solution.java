@@ -9,47 +9,74 @@ import java.util.Stack;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public static ArrayList<Integer> maxInWindows(int [] num, int size)
-    {
-        ArrayList<Integer> resultList = new ArrayList<>();
-        if (num == null || num.length == 0 || size <= 0){
-            return resultList;
+    private ArrayList<Integer> sResultList = new ArrayList<>();
+
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        sResultList.clear();
+        if (input != null && k > 0 && k <= input.length){
+            int[] output = new int[k];
+            getLeastNumbers(input, output);
+            for (int value: output){
+                sResultList.add(value);
+            }
         }
-        if (num.length < size){
-            return resultList;
-        }
-        List<Integer> dataList = new ArrayList<>();
-        for (int value : num) {
-            dataList.add(value);
-        }
-        resultList.addAll(maxInWindowsCore(dataList, size));
-        return resultList;
+        return sResultList;
     }
 
-    private static List<Integer> maxInWindowsCore(List<Integer> data, int size) {
-        List<Integer> resultList = new ArrayList<>();
-        Deque<Integer> queue = new LinkedList<>();
-        // 根据size大小填充滑动窗口
-        for (int i=0; i<size; i++){
-            while (!queue.isEmpty() && data.get(i) >= data.get(queue.getLast())){
-                queue.removeLast();
-            }
-            queue.add(i);
+    /**
+     * 题目： 输入n个整数，找出其中最小的k个数。
+     * 【第一种解法】
+     * @param input  输入数组
+     * @param output 输出数组
+     */
+    public static void getLeastNumbers(int[] input, int[] output) {
+
+        if (input == null || output == null || output.length <= 0 || input.length < output.length) {
+            throw new IllegalArgumentException("Invalid args");
         }
-        // 滑动窗口逐步从左至右滑动
-        for (int i=size; i<data.size(); i++){
-            resultList.add(data.get(queue.getFirst()));
-            while (!queue.isEmpty() && data.get(i) >= data.get(queue.getLast())){
-                queue.removeLast();
+
+        int start = 0;
+        int end = input.length - 1;
+        int index = partition(input, start, end);
+        int target = output.length - 1;
+
+        while (index != target) {
+            if (index < target) {
+                start = index + 1;
+            } else {
+                end = index - 1;
             }
-            if (!queue.isEmpty() && queue.getFirst() <= i-size){
-                queue.removeFirst();
-            }
-            queue.add(i);
+            index = partition(input, start, end);
         }
-        // 额外加上最后1个窗口的最大元素
-        resultList.add(data.get(queue.getFirst()));
-        return resultList;
+
+        System.arraycopy(input, 0, output, 0, output.length);
+    }
+
+    /**
+     * 分区算法
+     *
+     * @param input 输入数组
+     * @param start 开始下标
+     * @param end   结束下标
+     * @return 分区位置
+     */
+    private static int partition(int[] input, int start, int end) {
+        int tmp = input[start];
+
+        while (start < end) {
+            while (start < end && input[end] >= tmp) {
+                end--;
+            }
+            input[start] = input[end];
+
+            while (start < end && input[start] <= tmp) {
+                start++;
+            }
+            input[end] = input[start];
+        }
+
+        input[start] = tmp;
+        return start;
     }
 
     /**
