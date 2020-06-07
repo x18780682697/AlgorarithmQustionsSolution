@@ -15,17 +15,8 @@ class ExampleUnitTest {
      */
     @Test
     fun test() {
-        val head = ListNode(0)
-        val node1 = ListNode(1)
-        head.next = node1
-        val node2 = ListNode(2)
-        node1.next = node2
-        val node3 = ListNode(3)
-        node2.next = node3
-        val node4 = ListNode(4)
-        node3.next = node4
-        node4.next = node2
-        assertEquals(node2, Solution.EntryNodeOfLoop(head))
+        Solution.IsPopOrder(intArrayOf(1,2,3,4,5), intArrayOf(2,1))
+        assertEquals(true, Solution.IsPopOrder(intArrayOf(1,2,3,4,5), intArrayOf(5,4,3,2,1)))
     }
 
 //    /**
