@@ -30,52 +30,50 @@ public class Solution {
      * @param output 输出数组
      */
     public static void getLeastNumbers(int[] input, int[] output) {
-
-        if (input == null || output == null || output.length <= 0 || input.length < output.length) {
-            throw new IllegalArgumentException("Invalid args");
-        }
-
-        int start = 0;
-        int end = input.length - 1;
-        int index = partition(input, start, end);
-        int target = output.length - 1;
-
-        while (index != target) {
-            if (index < target) {
+        int inputNum = input.length;
+        int outputNum = output.length;
+        int index = partition(input, 0, inputNum-1);
+        int start = 0, end = inputNum-1;
+        // 根据上次分区结果动态调整分区范围，使得最终左边分区的大小刚好调整为所需大小
+        while (index != outputNum - 1){
+            if (index < outputNum - 1){
                 start = index + 1;
-            } else {
+            }else{
                 end = index - 1;
             }
             index = partition(input, start, end);
         }
-
-        System.arraycopy(input, 0, output, 0, output.length);
+        System.arraycopy(input, 0,  output, 0, outputNum);
     }
 
     /**
      * 分区算法
+     *
+     * 函数调用效果说明：
+     * 以input[start]的值作为临界值，使数组分为两个区域
+     * 左边区域总是小于临界值，右边区域总是大于临界值，两个子区域均不保证数据有序
      *
      * @param input 输入数组
      * @param start 开始下标
      * @param end   结束下标
      * @return 分区位置
      */
-    private static int partition(int[] input, int start, int end) {
-        int tmp = input[start];
-
-        while (start < end) {
-            while (start < end && input[end] >= tmp) {
+    public static int partition(int[] input, int start, int end) {
+        int criticalVal = input[start];
+        while (start < end){
+            // 找到大于临界值的值，立即往前移动，移动的值此前移走的start值的位置
+            while (start < end && input[end] >= criticalVal){
                 end--;
             }
             input[start] = input[end];
-
-            while (start < end && input[start] <= tmp) {
+            // 找到小于临界值的值，立即往后移动，移动的位置是此前移走的end值的位置
+            while (start < end && input[start] <= criticalVal){
                 start++;
             }
             input[end] = input[start];
         }
-
-        input[start] = tmp;
+        // 将临界值从外存空间移动到临界位置
+        input[start] = criticalVal;
         return start;
     }
 

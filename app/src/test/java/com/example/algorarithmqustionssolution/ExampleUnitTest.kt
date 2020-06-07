@@ -15,7 +15,12 @@ class ExampleUnitTest {
      */
     @Test
     fun test() {
-        Solution.maxInWindows(intArrayOf(2,3,4,2,6,2,5,1), 3)
+//        Solution.maxInWindows(intArrayOf(2,3,4,2,6,2,5,1), 3)
+        val input = intArrayOf(3,0,1,8,5)
+        Solution.partition(input, 0, 4)
+        for(value in input){
+            print("$value,")
+        }
         assertEquals(true, true)
     }
 
