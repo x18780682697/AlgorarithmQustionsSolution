@@ -2,6 +2,7 @@ package com.example.algorarithmqustionssolution;
 
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,45 +14,34 @@ import java.util.Stack;
 public class Solution {
 
     public int FirstNotRepeatingChar(String str) {
-        // 结果默认为-1（表示未找到）
-        int result = -1;
-        if (str != null && str.length() > 0){
-            char ch = firstNotRepeatingChar(str);
-            result = str.indexOf(ch);
+        if (str == null){
+            return -1;
         }
-        return result;
+        if (str.length() == 0){
+            return -1;
+        }
+        char ch = firstNotRepeatingChar(str);
+        return str.indexOf(ch);
     }
 
     public static char firstNotRepeatingChar(String s) {
-        if (s == null || s.length() < 1) {
-            throw new IllegalArgumentException("Arg should not be null or empty");
-        }
-
-        Map<Character, Integer> map = new LinkedHashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (map.containsKey(c)) {
-                map.put(c, -2);
-            } else {
-                map.put(c, i);
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i=0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            if (map.containsKey(ch)){
+                map.put(ch, -1);
+            }else{
+                map.put(ch, i);
             }
         }
-
-        Set<Map.Entry<Character, Integer>> entrySet = map.entrySet();
-        // 记录只出现一次的字符的索引
-        int idx = Integer.MAX_VALUE;
-        // 记录只出现一次的字符
-        char result = '\0';
-
-        // 找最小索引对应的字符
-        for (Map.Entry<Character, Integer> entry : entrySet) {
-            if (entry.getValue() >= 0 && entry.getValue() < idx) {
-                idx = entry.getValue();
-                result = entry.getKey();
+        int firstNotRepeatIndex = Integer.MAX_VALUE;
+        for (Map.Entry<Character, Integer> entry : map.entrySet()){
+            int index = entry.getValue();
+            if (index >= 0 && index < firstNotRepeatIndex){
+                firstNotRepeatIndex = index;
             }
         }
-
-        return result;
+        return s.charAt(firstNotRepeatIndex);
     }
 
 
