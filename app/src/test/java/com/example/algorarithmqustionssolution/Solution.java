@@ -2,80 +2,58 @@ package com.example.algorarithmqustionssolution;
 
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 @SuppressWarnings("unused")
 public class Solution {
 
-    private ArrayList<Integer> sResultList = new ArrayList<>();
-
-    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
-        sResultList.clear();
-        if (input != null && k > 0 && k <= input.length){
-            int[] output = new int[k];
-            getLeastNumbers(input, output);
-            for (int value: output){
-                sResultList.add(value);
-            }
+    public int FirstNotRepeatingChar(String str) {
+        // 结果默认为-1（表示未找到）
+        int result = -1;
+        if (str != null && str.length() > 0){
+            char ch = firstNotRepeatingChar(str);
+            result = str.indexOf(ch);
         }
-        return sResultList;
+        return result;
     }
 
-    /**
-     * 题目： 输入n个整数，找出其中最小的k个数。
-     * 【第一种解法】
-     * @param input  输入数组
-     * @param output 输出数组
-     */
-    public static void getLeastNumbers(int[] input, int[] output) {
-        int inputNum = input.length;
-        int outputNum = output.length;
-        int index = partition(input, 0, inputNum-1);
-        int start = 0, end = inputNum-1;
-        // 根据上次分区结果动态调整分区范围，使得最终左边分区的大小刚好调整为所需大小
-        while (index != outputNum - 1){
-            if (index < outputNum - 1){
-                start = index + 1;
-            }else{
-                end = index - 1;
-            }
-            index = partition(input, start, end);
+    public static char firstNotRepeatingChar(String s) {
+        if (s == null || s.length() < 1) {
+            throw new IllegalArgumentException("Arg should not be null or empty");
         }
-        System.arraycopy(input, 0,  output, 0, outputNum);
+
+        Map<Character, Integer> map = new LinkedHashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) {
+                map.put(c, -2);
+            } else {
+                map.put(c, i);
+            }
+        }
+
+        Set<Map.Entry<Character, Integer>> entrySet = map.entrySet();
+        // 记录只出现一次的字符的索引
+        int idx = Integer.MAX_VALUE;
+        // 记录只出现一次的字符
+        char result = '\0';
+
+        // 找最小索引对应的字符
+        for (Map.Entry<Character, Integer> entry : entrySet) {
+            if (entry.getValue() >= 0 && entry.getValue() < idx) {
+                idx = entry.getValue();
+                result = entry.getKey();
+            }
+        }
+
+        return result;
     }
 
-    /**
-     * 分区算法
-     *
-     * 函数调用效果说明：
-     * 以input[start]的值作为临界值，使数组分为两个区域
-     * 左边区域总是小于临界值，右边区域总是大于临界值，两个子区域均不保证数据有序
-     *
-     * @param input 输入数组
-     * @param start 开始下标
-     * @param end   结束下标
-     * @return 分区位置
-     */
-    public static int partition(int[] input, int start, int end) {
-        int criticalVal = input[start];
-        while (start < end){
-            // 找到大于临界值的值，立即往前移动，移动的值此前移走的start值的位置
-            while (start < end && input[end] >= criticalVal){
-                end--;
-            }
-            input[start] = input[end];
-            // 找到小于临界值的值，立即往后移动，移动的位置是此前移走的end值的位置
-            while (start < end && input[start] <= criticalVal){
-                start++;
-            }
-            input[end] = input[start];
-        }
-        // 将临界值从外存空间移动到临界位置
-        input[start] = criticalVal;
-        return start;
-    }
 
     /**
      * 二叉树节点类
