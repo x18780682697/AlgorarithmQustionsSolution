@@ -14,33 +14,34 @@ import java.util.Stack;
 public class Solution {
 
     public boolean Find(int target, int [][] array) {
+        if (array == null){
+            return false;
+        }
+        if (array.length == 0){
+            return false;
+        }
+        if (array[0].length == 0){
+            return false;
+        }
         return find(array, target);
     }
 
     public static boolean find(int[][] matrix, int number) {
-
-        // 输入条件判断
-        if (matrix == null || matrix.length < 1 || matrix[0].length < 1) {
-            return false;
-        }
-
-        int rows = matrix.length; // 数组的行数
-        int cols = matrix[1].length; // 数组行的列数
-
-        int row = 0; // 起始开始的行号
-        int col = cols - 1; // 起始开始的列号
-
-        // 要查找的位置确保在数组之内
-        while (row >= 0 && row < rows && col >= 0 && col < cols) {
-            if (matrix[row][col] == number) { // 如果找到了就直接退出
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        // 二维矩阵左上角
+        int curRow = 0;
+        int curCol = cols - 1;
+        while (curRow >=0 && curRow < rows && curCol >=0 && curCol < cols){
+            int curNumber = matrix[curRow][curCol];
+            if (curNumber == number){
                 return true;
-            } else if (matrix[row][col] > number) { // 如果找到的数比要找的数大，说明要找的数在当前数的左边
-                col--; // 列数减一，代表向左移动
-            } else { // 如果找到的数比要找的数小，说明要找的数在当前数的下边
-                row++; // 行数加一，代表向下移动
+            }else if(curNumber > number){
+                curCol--;
+            }else{
+                curRow++;
             }
         }
-
         return false;
     }
 
