@@ -13,23 +13,35 @@ import java.util.Stack;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public int Fibonacci(int n) {
-        return (int) fibonacci(n);
+    public boolean Find(int target, int [][] array) {
+        return find(array, target);
     }
 
-    /**
-     * 写一个函数，输入n，求斐波那契（Fibonacci) 数列的第n项
-     * @param n Fibonacci数的项数
-     * @return 第n项的结果
-     */
-    public static long fibonacci(int n) {
-        if (n == 0){
-            return 0;
+    public static boolean find(int[][] matrix, int number) {
+
+        // 输入条件判断
+        if (matrix == null || matrix.length < 1 || matrix[0].length < 1) {
+            return false;
         }
-        if (n == 1){
-            return 1;
+
+        int rows = matrix.length; // 数组的行数
+        int cols = matrix[1].length; // 数组行的列数
+
+        int row = 0; // 起始开始的行号
+        int col = cols - 1; // 起始开始的列号
+
+        // 要查找的位置确保在数组之内
+        while (row >= 0 && row < rows && col >= 0 && col < cols) {
+            if (matrix[row][col] == number) { // 如果找到了就直接退出
+                return true;
+            } else if (matrix[row][col] > number) { // 如果找到的数比要找的数大，说明要找的数在当前数的左边
+                col--; // 列数减一，代表向左移动
+            } else { // 如果找到的数比要找的数小，说明要找的数在当前数的下边
+                row++; // 行数加一，代表向下移动
+            }
         }
-        return fibonacci(n-1) + fibonacci(n-2);
+
+        return false;
     }
 
     /**
