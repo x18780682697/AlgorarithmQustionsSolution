@@ -14,45 +14,30 @@ import java.util.Stack;
 public class Solution {
 
     public int FindGreatestSumOfSubArray(int[] array) {
-        return findGreatestSumOfSubArray(array);
+        if (array == null){
+            throw new RuntimeException("invalid input");
+        }
+        return FindGreatestSumOfSubArray2(array, array.length);
     }
 
     /**
-     * 输入一个整型数组，数组里有正数也有负数。数组中一个或连
-     * 续的多个整数组成一个子数组。求所有子数组的和的最大值。要求时间复杂度为O(n)。
-     *
-     * @param arr 输入数组
-     * @return 最大的连续子数组和
+     * 使用动态规划思想解题
+     * https://blog.csdn.net/qq_34528297/article/details/72700695
      */
-    public static int findGreatestSumOfSubArray(int[] arr) {
-        // 参数校验
-        if (arr == null || arr.length < 1) {
-            throw new IllegalArgumentException("Array must contain an element");
+    public int FindGreatestSumOfSubArray2(int[] arr,int n){
+        int sum = arr[0];
+        int max = arr[0];
+        for(int i = 1; i < n; i++){
+            sum = getMax(sum+arr[i],arr[i]);
+            if(sum >= max)
+                max = sum;
         }
-
-        // 记录最大的子数组和，开始时是最小的整数
-        int max = Integer.MIN_VALUE;
-        // 当前的和
-        int curMax = 0;
-        // 数组遍历
-        for (int i : arr) {
-            // 如果当前和小于等于0，就重新设置当前和
-            if (curMax <= 0) {
-                curMax = i;
-            }
-            // 如果当前和大于0，累加当前和
-            else {
-                curMax += i;
-            }
-
-            // 更新记录到的最在的子数组和
-            if (max < curMax) {
-                max = curMax;
-            }
-        }
-
 
         return max;
+    }
+
+    public int getMax(int a,int b){
+        return a > b ? a: b;
     }
 
     /**
