@@ -25,19 +25,16 @@ public class Solution {
      * https://blog.csdn.net/qq_34528297/article/details/72700695
      */
     public int FindGreatestSumOfSubArray2(int[] arr,int n){
-        int sum = arr[0];
-        int max = arr[0];
-        for(int i = 1; i < n; i++){
-            sum = getMax(sum+arr[i],arr[i]);
-            if(sum >= max)
-                max = sum;
+        int fn_1 = arr[0];
+        int max = fn_1;
+        for (int i=1; i<n; i++){
+            int fn = fn_1 < 0 ? arr[i] : fn_1 + arr[i];
+            if (fn > max){
+                max = fn;
+            }
+            fn_1 = fn;
         }
-
         return max;
-    }
-
-    public int getMax(int a,int b){
-        return a > b ? a: b;
     }
 
     /**
