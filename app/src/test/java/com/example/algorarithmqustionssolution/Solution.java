@@ -14,6 +14,10 @@ import java.util.Stack;
 public class Solution {
 
     public int minNumberInRotateArray(int [] array) {
+        // 判断输入是否合法
+        if (array == null || array.length == 0) {
+            throw new RuntimeException("Invalid input.");
+        }
         return min(array);
     }
 
@@ -22,46 +26,23 @@ public class Solution {
      * @return 数组的最小值
      */
     public static int min(int[] numbers) {
-        // 判断输入是否合法
-        if (numbers == null || numbers.length == 0) {
-            throw new RuntimeException("Invalid input.");
-        }
-
-        // 开始处理的第一个位置
-        int lo = 0;
-        // 开始处理的最后一个位置
-        int hi = numbers.length - 1;
-        // 设置初始值
-        int mi = lo;
-
-        // 确保lo在前一个排好序的部分，hi在排好序的后一个部分
-        while (numbers[lo] >= numbers[hi]) {
-            // 当处理范围只有两个数据时，返回后一个结果
-            // 因为numbers[lo] >= numbers[hi]总是成立，后一个结果对应的是最小的值
-            if (hi - lo == 1) {
-                return numbers[hi];
+        int start = 0;
+        int end = numbers.length-1;
+        int mid;
+        while (numbers[start] >= numbers[end]){
+            // 仅剩余两个元素时，最小值为后者
+            if (end-start == 1){
+                return numbers[end];
             }
-
-            // 取中间的位置
-            mi = lo + (hi - lo) / 2;
-
-            // 如果三个数都相等，则需要进行顺序处理，从头到尾找最小的值
-            if (numbers[mi] == numbers[lo] && numbers[hi] == numbers[mi]) {
-                return minInorder(numbers, lo, hi);
-            }
-
-            // 如果中间位置对应的值在前一个排好序的部分，将lo设置为新的处理位置
-            if (numbers[mi] >= numbers[lo]) {
-                lo = mi;
-            }
-            // 如果中间位置对应的值在后一个排好序的部分，将hi设置为新的处理位置
-            else if (numbers[mi] <= numbers[hi]) {
-                hi = mi;
+            // 利用二分法不断缩最小值所在的范围
+            mid = start + (end - start) / 2;
+            if (numbers[mid] >= numbers[start]){ // 前半部分为递增序列，则最小值位于后半部分
+                start = mid;
+            }else if(numbers[mid] <= numbers[end]){ // 后半部分为递增序列，则最小值位于前半部分
+                end = mid;
             }
         }
-
-        // 返回最终的处理结果
-        return numbers[mi];
+        return Integer.MIN_VALUE;
     }
 
     /**
