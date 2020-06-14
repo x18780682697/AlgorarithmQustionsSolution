@@ -8,75 +8,45 @@ public class Solution {
 
     public boolean match(char[] str, char[] pattern)
     {
-        return match(new String(str), new String(pattern));
-    }
-
-    /**
-     * 题目：请实现一个函数用来匹配包含‘.’和‘*’的正则表达式。模式中的字符'.'表示任意一个字符，
-     * 而‘*’表示它前面的字符可以出现任意次（含0次）。本题中，匹配是指字符串的所有字符匹配整个模式。
-     *
-     * @param input
-     * @param pattern
-     * @return
-     */
-    public static boolean match(String input, String pattern) {
-        if (input == null || pattern == null) {
+        if (str == null || pattern == null){
             return false;
         }
-
-        return matchCore(input, 0, pattern, 0);
+        return matchCore(new String(str), 0, new String(pattern), 0);
     }
 
     private static boolean matchCore(String input, int i, String pattern, int p) {
 
-        // 匹配串和模式串都到达尾，说明成功匹配
-        if (i >= input.length() && p >= pattern.length()) {
+        // 递归边界条件设定
+
+        // 模式字符串和而待匹配字符串均未达到末尾，匹配成功
+        if (i >= input.length() && p >= pattern.length()){
             return true;
         }
-
-        // 只有模式串到达结尾，说明匹配失败
-        if (i != input.length() && p >= pattern.length()) {
+        // 模式字符串已经达到末尾，而待匹配字符串未达到末尾，匹配失败
+        if (p >= pattern.length() && i < input.length()) {
             return false;
         }
 
-        // 模式串未结束，匹配串有可能结束有可能未结束
-
-        // p位置的下一个字符中为*号
-        if (p + 1 < pattern.length() && pattern.charAt(p + 1) == '*') {
-
-            // 匹配串已经结束
-            if (i >= input.length()) {
-                return matchCore(input, i, pattern, p + 2);
+        // 下一个字符为*则需要进行特殊匹配
+        if (p+1 < pattern.length() && pattern.charAt(p+1) == '*'){
+            // 根据当前模式字符和待匹配字符是否一致，进行后续匹配
+            if ((pattern.charAt(p) == '.' && i < input.length())
+                    || (i < input.length() && pattern.charAt(p) == input.charAt(i))){
+                return matchCore(input, i, pattern, p+2) /*x*匹配0个*/
+                        || matchCore(input, i+1, pattern, p+2) /*x*匹配1个*/
+                        || matchCore(input, i+1, pattern, p); /*x*匹配多个*/
+            }else{
+                return matchCore(input, i, pattern, p+2) /*x*匹配0个*/;
             }
-            // 匹配串还没有结束
-            else {
-                if (pattern.charAt(p) == input.charAt(i) || pattern.charAt(p) == '.') {
-                    return
-                            // 匹配串向后移动一个位置，模式串向后移动两个位置
-                            matchCore(input, i + 1, pattern, p + 2)
-                                    // 匹配串向后移动一个位置，模式串不移动
-                                    || matchCore(input, i + 1, pattern, p)
-                                    // 匹配串不移动，模式串向后移动两个位置
-                                    || matchCore(input, i, pattern, p + 2);
-                } else {
-                    return matchCore(input, i, pattern, p + 2);
-                }
+        }else{
+            if ((pattern.charAt(p) == '.' && i < input.length())
+                    || (i < input.length() && pattern.charAt(p) == input.charAt(i))){
+                return matchCore(input, i+1, pattern, p+1);
+            }else{
+                return false;
             }
         }
 
-        // 匹配串已经结束
-        if (i >= input.length()) {
-            return false;
-        }
-        // 匹配串还没有结束
-        else {
-            if (input.charAt(i) == pattern.charAt(p) || pattern.charAt(p) == '.') {
-                return matchCore(input, i + 1, pattern, p + 1);
-            }
-        }
-
-
-        return false;
     }
 
     /**

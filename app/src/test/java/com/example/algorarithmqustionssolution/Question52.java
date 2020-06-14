@@ -4,6 +4,8 @@ package com.example.algorarithmqustionssolution;
  * 52-正则表达式匹配
  * （网页链接所指的题干有无，以牛客网的为准）
  * https://www.nowcoder.com/practice/45327ae22b7b413ea21df13ee7d6429c?tpId=13&&tqId=11205&rp=1&ru=/activity/oj&qru=/ta/coding-interviews/question-ranking
+ * （剑指offer解题思路描述正确，但不算足够清晰，需要结合牛客网评论区披萨阿叔的解答辅助理解）
+ * https://www.nowcoder.com/questionTerminal/45327ae22b7b413ea21df13ee7d6429c?f=discussion
  *
  * 网页链接：https://lrh1993.gitbooks.io/android_interview_guide/content/algorithm/For-offer/51.html
  * 题号链接：https://zhuanlan.zhihu.com/p/56200260
