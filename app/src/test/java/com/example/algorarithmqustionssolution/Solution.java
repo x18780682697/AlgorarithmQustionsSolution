@@ -19,13 +19,18 @@ public class Solution {
      */
     public static int numberOfOne(int n) {
         int cnt = 0;
-        int leftMoveLen = 0;
-        while (leftMoveLen < 32){
-            int tag = 1<<leftMoveLen;
-            if ((tag&n) == tag){
+        if (n < 0){
+            // 去掉最高位1
+            n = n & Integer.MAX_VALUE;
+            cnt++;
+        }
+        int left = n;
+        while (left != 0){
+            System.out.println("left: " + left);
+            if ((left&1) == 1){
                 cnt++;
             }
-            leftMoveLen++;
+            left = left>>1;
         }
         return cnt;
     }
