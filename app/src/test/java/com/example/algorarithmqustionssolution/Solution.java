@@ -6,33 +6,50 @@ import java.util.Comparator;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public int NumberOf1(int n) {
-        return numberOfOne(n);
+    public void FindNumsAppearOnce(int [] array,int num1[] , int num2[]) {
+        int[] result = findNumbersAppearanceOnce(array);
+        num1[0] = result[0];
+        num2[0] = result[1];
     }
 
-    /**
-     * 请实现一个函数， 输入一个整数，输出该数二进制表示中1的个数。
-     * 例如把9表示成二进制是1001 ，有2位是1. 因此如果输入9，该出2。
-     *
-     * @param n 待的数字
-     * @return 数字中二进制表表的1的数目
-     */
-    public static int numberOfOne(int n) {
-        int cnt = 0;
-        if (n < 0){
-            // 去掉最高位1
-            n = n & Integer.MAX_VALUE;
-            cnt++;
+    public static int[] findNumbersAppearanceOnce(int[] data) {
+        int[] result = {0, 0};
+
+        if (data == null || data.length < 2) {
+            return result;
         }
-        int left = n;
-        while (left != 0){
-            System.out.println("left: " + left);
-            if ((left&1) == 1){
-                cnt++;
+
+        int xor = 0;
+        for (int i : data) {
+            xor ^= i;
+        }
+
+        int indexOf1 = findFirstBit1(xor);
+
+        for (int i : data) {
+            if (isBit1(i, indexOf1)) {
+                result[0] ^= i;
+            } else {
+                result[1] ^= i;
             }
-            left = left>>1;
         }
-        return cnt;
+
+        return result;
+    }
+
+    private static int findFirstBit1(int num) {
+        int index = 0;
+        while ((num & 1) == 0 && index < 32) {
+            num >>>= 1;
+            index++;
+        }
+
+        return index;
+    }
+
+    private static boolean isBit1(int num, int indexBit) {
+        num >>>= indexBit;
+        return (num & 1) == 1;
     }
 
     /**
