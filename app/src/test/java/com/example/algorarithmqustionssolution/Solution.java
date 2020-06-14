@@ -14,42 +14,22 @@ public class Solution {
 
     public static int[] findNumbersAppearanceOnce(int[] data) {
         int[] result = {0, 0};
-
-        if (data == null || data.length < 2) {
-            return result;
-        }
-
         int xor = 0;
-        for (int i : data) {
-            xor ^= i;
+        for (int value: data){
+            xor = xor^value;
         }
-
-        int indexOf1 = findFirstBit1(xor);
-
-        for (int i : data) {
-            if (isBit1(i, indexOf1)) {
-                result[0] ^= i;
-            } else {
-                result[1] ^= i;
-            }
-        }
-
-        return result;
-    }
-
-    private static int findFirstBit1(int num) {
         int index = 0;
-        while ((num & 1) == 0 && index < 32) {
-            num >>>= 1;
+        while ((xor&(1<<index)) == 0){
             index++;
         }
-
-        return index;
-    }
-
-    private static boolean isBit1(int num, int indexBit) {
-        num >>>= indexBit;
-        return (num & 1) == 1;
+        for (int value: data){
+            if ((value&(1<<index)) == 0){
+                result[0] = result[0]^value;
+            }else{
+                result[1] = result[1]^value;
+            }
+        }
+        return result;
     }
 
     /**
