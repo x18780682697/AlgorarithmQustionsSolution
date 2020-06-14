@@ -1,74 +1,74 @@
 package com.example.algorarithmqustionssolution;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 @SuppressWarnings("unused")
 public class Solution {
 
-    public int GetNumberOfK(int [] array , int k) {
-        if (array == null || array.length == 0){
-            return 0;
-        }
-        return getNumberOfK(array, k);
-    }
+    private static ArrayList<String> sResultList = new ArrayList<>();
 
-    /**
-     * 题目：统计一个数字：在排序数组中出现的次数
-     * @param data
-     * @param k
-     * @return
-     */
-    public static int getNumberOfK(int[] data, int k) {
-        int cnt = 0;
-        int startIndex = getTargetIndex(data, k, true);
-        int endIndex = getTargetIndex(data, k, false);
-        if (startIndex >= 0 && endIndex >= 0 && endIndex >= startIndex){
-            cnt = endIndex - startIndex + 1;
-        }
-        return cnt;
-    }
-
-    /**
-     * 用于获取k出现的开始位置和结束位置
-     * @param data
-     * @param k
-     * @param isTryFindStart
-     * @return
-     */
-    private static int getTargetIndex(int[] data, int k, boolean isTryFindStart) {
-        int start = 0;
-        int end = data.length-1;
-        int mid;
-        while (start <= end){
-            mid = start + (end - start);
-            if (data[mid] == k){
-                // 核心逻辑
-                // 根据是寻找开始索引还是结束索引
-                // 选取判断规则
-                if (isTryFindStart){
-                    if (mid == 0 || data[mid-1] != k){
-                        return mid;
-                    }else{
-                        end = mid-1;
-                    }
-                }else{
-                    if (mid == data.length-1 || data[mid+1] != k){
-                        return mid;
-                    }else{
-                        start = mid+1;
-                    }
-                }
-            }else{
-                boolean isAbove = data[mid] > k;
-                if (isAbove){
-                    end = mid-1;
-                }else{
-                    start = mid+1;
-                }
+    public static ArrayList<String> Permutation(String str) {
+        sResultList.clear();
+        permutation(str.toCharArray());
+        sResultList.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
             }
-
-        }
-        return -1;
+        });
+        return sResultList;
     }
 
+    /**
+     * 题目：输入一个字符串，打印出该字符事中字符的所有排列。例如输入字符串abc。
+     * 则打印出由字符a、b、c 所能排列出来的所有字符串abc、acb、bac、bca、cab和cba。
+     *
+     * @param chars 待排序的字符数组
+     */
+    public static void permutation(char[] chars) {
+        // 输入较验
+        if (chars == null || chars.length < 1) {
+            return;
+        }
+        // 进行排列操作
+        permutation(chars, 0);
+    }
+
+    /**
+     * 求字符数组的排列
+     *
+     * @param chars 待排列的字符串
+     * @param begin 当前处理的位置
+     */
+    public static void permutation(char[] chars, int begin) {
+        // 如果是最后一个元素了，就输出排列结果
+        if (chars.length - 1 == begin) {
+            String result = new String(chars);
+            System.out.println("result: " + result);
+            if (!sResultList.contains(result)){
+                sResultList.add(result);
+                System.out.println(result + " ");
+            }else{
+                System.out.println("find repeat string: " + result);
+            }
+        } else {
+            char tmp;
+            // 对当前还未处理的字符串进行处理，每个字符都可以作为当前处理位置的元素
+            for (int i = begin; i < chars.length; i++) {
+                // 下面是交换元素的位置
+                tmp = chars[begin];
+                chars[begin] = chars[i];
+                chars[i] = tmp;
+
+                // 处理下一个位置
+                permutation(chars, begin + 1);
+
+                chars[i] = chars[begin];
+                chars[begin] = tmp;
+            }
+        }
+    }
 
     /**
      * 二叉树节点类
