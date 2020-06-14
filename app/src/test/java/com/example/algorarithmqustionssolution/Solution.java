@@ -6,66 +6,50 @@ import java.util.Comparator;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public int InversePairs(int [] array) {
-        return inversePairs(array)%1000000007;
+    public int NumberOf1(int n) {
+        return numberOfOne(n);
     }
 
-    public static int inversePairs(int[] data) {
-        if (data == null || data.length < 1) {
-            throw new IllegalArgumentException("Array arg should contain at least a value");
+    /**
+     * 请实现一个函数， 输入一个整数，输出该数二进制表示中1的个数。
+     * 例如把9表示成二进制是1001 ，有2位是1. 因此如果输入9，该出2。
+     *
+     * @param n 待的数字
+     * @return 数字中二进制表表的1的数目
+     */
+    public static int numberOfOne(int n) {
+        // 记录数字中1的位数
+        int result = 0;
+
+        // JAVA语言规范中，int整形占四个字节，总计32位
+        // 对每一个位置与1进行求与操作，再累加就可以求出当前数字的表示是多少位1
+        for (int i = 0; i < 32; i++) {
+            result += (n & 1);
+            n >>>= 1;
         }
 
-        int[] copy = new int[data.length];
-        System.arraycopy(data, 0, copy, 0, data.length);
-
-        return inversePairsCore(data, copy, 0, data.length - 1);
+        // 返回求得的结果
+        return result;
     }
 
-    private static int inversePairsCore(int[] data, int[] copy, int start, int end) {
+    /**
+     * @param n 待的数字
+     * @return 数字中二进制表表的1的数目
+     */
+    public static int numberOfOne2(int n) {
+        // 记录数字中1的位数
+        int result = 0;
 
-        if (start == end) {
-            copy[start] = data[start];
-            return 0;
+        // 数字的二进制表示中有多少个1就进行多少次操作
+        while (n != 0) {
+            result++;
+            // 从最右边的1开始，每一次操作都使n的最右的一个1变成了0，
+            // 即使是符号位也会进行操作。
+            n = (n - 1) & n;
         }
 
-        int length = (end - start) / 2;
-        int left = inversePairsCore(copy, data, start, start + length);
-        int right = inversePairsCore(copy, data, start + length + 1, end);
-
-        // 前半段的最后一个数字的下标
-        int i = start + length;
-        // 后半段最后一个数字的下标
-        int j = end;
-        // 开始拷贝的位置
-        int indexCopy = end;
-        // 逆序数
-        int count = 0;
-
-        while (i >= start && j >= start + length + 1) {
-            if (data[i] > data[j]) {
-                copy[indexCopy] = data[i];
-                indexCopy--;
-                i--;
-                count += j - (start + length); // 对应的逆序数
-            } else {
-                copy[indexCopy] = data[j];
-                indexCopy--;
-                j--;
-            }
-        }
-
-        for (; i >= start;) {
-            copy[indexCopy] = data[i];
-            indexCopy--;
-            i--;
-        }
-
-        for (; j >= start + length + 1;) {
-            copy[indexCopy] = data[j];
-            indexCopy--;
-            j--;
-        }
-        return count + left + right;
+        // 返回求得的结果
+        return result;
     }
 
     /**
