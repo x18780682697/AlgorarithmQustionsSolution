@@ -1,15 +1,5 @@
 package com.example.algorarithmqustionssolution;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-
 @SuppressWarnings("unused")
 public class Solution {
 
@@ -21,88 +11,64 @@ public class Solution {
     }
 
     /**
-     * 找排序数组中k第一次出现的位置
-     *
-     * @param data
-     * @param k
-     * @param start
-     * @param end
-     * @return
-     */
-    private static int getFirstK(int[] data, int k, int start, int end) {
-        if (data == null || data.length < 1 || start > end) {
-            return -1;
-        }
-
-        int midIdx = start + (end - start) / 2;
-        int midData = data[midIdx];
-
-        if (midData == k) {
-            if (midIdx > 0 && data[midIdx - 1] != k || midIdx == 0) {
-                return midIdx;
-            } else {
-                end = midIdx - 1;
-            }
-        } else if (midData > k) {
-            end = midIdx - 1;
-        } else {
-            start = midIdx + 1;
-        }
-
-        return getFirstK(data, k, start, end);
-    }
-
-    /**
-     * 找排序数组中k最后一次出现的位置
-     *
-     * @param data
-     * @param k
-     * @param start
-     * @param end
-     * @return
-     */
-    private static int getLastK(int[] data, int k, int start, int end) {
-        if (data == null || data.length < 1 || start > end) {
-            return -1;
-        }
-
-        int midIdx = start + (end - start) / 2;
-        int midData = data[midIdx];
-
-        if (midData == k) {
-            if (midIdx + 1 < data.length && data[midIdx + 1] != k || midIdx == data.length - 1) {
-                return midIdx;
-            } else {
-                start = midIdx + 1;
-            }
-        } else if (midData < k) {
-            start = midIdx + 1;
-        } else {
-            end = midIdx - 1;
-        }
-
-        return getLastK(data, k, start, end);
-    }
-
-    /**
      * 题目：统计一个数字：在排序数组中出现的次数
      * @param data
      * @param k
      * @return
      */
     public static int getNumberOfK(int[] data, int k) {
-        int number = 0;
-        if (data != null && data.length > 0) {
-            int first = getFirstK(data, k, 0, data.length - 1);
-            int last = getLastK(data, k, 0, data.length - 1);
-
-            if (first > -1 && last > -1) {
-                number = last - first + 1;
-            }
+        int cnt = 0;
+        int startIndex = getTargetIndex(data, k, true);
+        int endIndex = getTargetIndex(data, k, false);
+        if (startIndex >= 0 && endIndex >= 0 && endIndex >= startIndex){
+            cnt = endIndex - startIndex + 1;
         }
-
-        return number;
+        return cnt;
     }
+
+    /**
+     * 用于获取k出现的开始位置和结束位置
+     * @param data
+     * @param k
+     * @param isTryFindStart
+     * @return
+     */
+    private static int getTargetIndex(int[] data, int k, boolean isTryFindStart) {
+        int start = 0;
+        int end = data.length-1;
+        int mid;
+        while (start <= end){
+            mid = start + (end - start);
+            if (data[mid] == k){
+                // 核心逻辑
+                // 根据是寻找开始索引还是结束索引
+                // 选取判断规则
+                if (isTryFindStart){
+                    if (mid == 0 || data[mid-1] != k){
+                        return mid;
+                    }else{
+                        end = mid-1;
+                    }
+                }else{
+                    if (mid == data.length-1 || data[mid+1] != k){
+                        return mid;
+                    }else{
+                        start = mid+1;
+                    }
+                }
+            }else{
+                boolean isAbove = data[mid] > k;
+                if (isAbove){
+                    end = mid-1;
+                }else{
+                    start = mid+1;
+                }
+            }
+
+        }
+        return -1;
+    }
+
 
     /**
      * 二叉树节点类
