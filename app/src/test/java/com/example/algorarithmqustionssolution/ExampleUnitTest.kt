@@ -15,7 +15,7 @@ class ExampleUnitTest {
      */
     @Test
     fun test() {
-        Solution.Permutation("abc")
+//        Solution.Permutation("abc")
         assertEquals(true, true)
     }
 
