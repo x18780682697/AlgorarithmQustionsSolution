@@ -6,30 +6,11 @@ import java.util.Comparator;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public void FindNumsAppearOnce(int [] array,int num1[] , int num2[]) {
-        int[] result = findNumbersAppearanceOnce(array);
-        num1[0] = result[0];
-        num2[0] = result[1];
-    }
-
-    public static int[] findNumbersAppearanceOnce(int[] data) {
-        int[] result = {0, 0};
-        int xor = 0;
-        for (int value: data){
-            xor = xor^value;
+    public String replaceSpace(StringBuffer str) {
+        if (str == null){
+            return null;
         }
-        int index = 0;
-        while ((xor&(1<<index)) == 0){
-            index++;
-        }
-        for (int value: data){
-            if ((value&(1<<index)) == 0){
-                result[0] = result[0]^value;
-            }else{
-                result[1] = result[1]^value;
-            }
-        }
-        return result;
+        return str.toString().replace(" ", "%20");
     }
 
     /**
