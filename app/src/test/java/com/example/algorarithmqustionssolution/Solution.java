@@ -8,7 +8,7 @@ import java.util.List;
 public class Solution {
 
     public void reOrderArray(int [] array) {
-        if (array == null || array.length == 0){
+        if (array == null || array.length <= 1){
             return;
         }
         reorderOddEven(array);
@@ -21,34 +21,23 @@ public class Solution {
      * @param arr 输入的数组
      */
     public static void reorderOddEven(int[] arr) {
-        // 对于输入的数组为空，或者长度小于2的只接返回
-        if (arr == null || arr.length < 2) {
-            return;
-        }
-
-        // 从左向右记录偶数的位置
         int start = 0;
-        // 从右向左记录奇数的位置
-        int end = arr.length - 1;
-        // 开始调整奇数和偶数的位置
-        while (start < end) {
-            // 找偶数
-            while (start < end && arr[start] % 2 != 0) {
+        int end = arr.length-1;
+        while (start < end){
+            // 从左往右找偶数，搬到数组后半段
+            while (start < end && arr[start]%2 == 1){
                 start++;
             }
-            // 找奇数
-            while (start < end && arr[end] % 2 == 0) {
+            // 从右往左找奇数，搬到数组前半段
+            while (start < end && arr[end]%2 == 0){
                 end--;
             }
-
-            // 找到后就将奇数和偶数交换位置
-            // 对于start=end的情况，交换不会产生什么影响
-            // 所以将if判断省去了
-            int tmp = arr[start];
-            arr[start] = arr[end];
-            arr[end] = tmp;
+            if (start < end){
+                int tmp = arr[start];
+                arr[start] = arr[end];
+                arr[end] = tmp;
+            }
         }
-
         int oddNumEndIdx = arr[end]%2==1 ? end : end-1;
         List<Integer> tmpList = new ArrayList<>();
 
