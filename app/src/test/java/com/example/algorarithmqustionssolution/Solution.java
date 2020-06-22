@@ -7,68 +7,62 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public void reOrderArray(int [] array) {
-        if (array == null || array.length <= 1){
-            return;
-        }
-        reorderOddEven(array);
+    public int MoreThanHalfNum_Solution(int [] array) {
+        return moreThanHalfNum(array);
     }
 
     /**
-     * 输入一个整数数组，实现一个函数来调整该数组中数字的顺序，
-     * 使得所有奇数位于数组的前半部分，所有偶数位予数组的后半部分。
+     * 题目：数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字
      *
-     * @param arr 输入的数组
+     * @param numbers 输入数组
+     * @return 找到的数字
      */
-    public static void reorderOddEven(int[] arr) {
-        int start = 0;
-        int end = arr.length-1;
-        while (start < end){
-            // 从左往右找偶数，搬到数组后半段
-            while (start < end && arr[start]%2 == 1){
-                start++;
-            }
-            // 从右往左找奇数，搬到数组前半段
-            while (start < end && arr[end]%2 == 0){
-                end--;
-            }
-            if (start < end){
-                int tmp = arr[start];
-                arr[start] = arr[end];
-                arr[end] = tmp;
-            }
-        }
-        int oddNumEndIdx = arr[end]%2==1 ? end : end-1;
-        List<Integer> tmpList = new ArrayList<>();
+    public static int moreThanHalfNum(int[] numbers) {
 
-        // 给奇数排序
-        tmpList.clear();
-        for (int i=0; i<=oddNumEndIdx; i++){
-            tmpList.add(arr[i]);
-        }
-        tmpList.sort(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1-o2;
-            }
-        });
-        for (int i=0; i<tmpList.size(); i++){
-            arr[i] = tmpList.get(i);
+        // 输入校验
+        if (numbers == null || numbers.length < 1) {
+            throw new IllegalArgumentException("array length must large than 0");
         }
 
-        // 给偶数排序
-        tmpList.clear();
-        for (int i=oddNumEndIdx+1; i<=arr.length-1; i++){
-            tmpList.add(arr[i]);
-        }
-        tmpList.sort(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1-o2;
+        // 用于记录出现次数大于数组一半的数
+        int result = numbers[0];
+        // 于当前记录的数不同的数的个数
+        int count = 1;
+        // 从第二个数开始向后找
+        for (int i = 1; i < numbers.length; i++) {
+            // 如果记数为0
+            if (count == 0) {
+                // 重新记录一个数，假设它是出现次数大于数组一半的
+                result = numbers[i];
+                // 记录统计值
+                count = 1;
             }
-        });
-        for (int i=0; i<tmpList.size(); i++){
-            arr[oddNumEndIdx+1+i] = tmpList.get(i);
+            // 如果记录的值与统计值相等，记数值增加
+            else if (result == numbers[i]) {
+                count++;
+            }
+            // 如果不相同就减少，相互抵消
+            else {
+                count--;
+            }
+        }
+
+        // 最后的result可能是出现次数大于数组一半长度的值
+        // 统计result的出现次数
+        count = 0;
+        for (int number : numbers) {
+            if (result == number) {
+                count++;
+            }
+        }
+
+        // 如果出现次数大于数组的一半就返回对应的值
+        if (count > numbers.length / 2) {
+            return result;
+        }
+        // 否则输入异常，应该返回0（牛客网AC所需）
+        else {
+            return 0;
         }
     }
 
