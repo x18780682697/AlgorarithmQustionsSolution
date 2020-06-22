@@ -8,6 +8,9 @@ import java.util.List;
 public class Solution {
 
     public int MoreThanHalfNum_Solution(int [] array) {
+        if (array == null || array.length == 0){
+            return 0;
+        }
         return moreThanHalfNum(array);
     }
 
@@ -18,50 +21,32 @@ public class Solution {
      * @return 找到的数字
      */
     public static int moreThanHalfNum(int[] numbers) {
-
-        // 输入校验
-        if (numbers == null || numbers.length < 1) {
-            throw new IllegalArgumentException("array length must large than 0");
-        }
-
-        // 用于记录出现次数大于数组一半的数
-        int result = numbers[0];
-        // 于当前记录的数不同的数的个数
-        int count = 1;
-        // 从第二个数开始向后找
-        for (int i = 1; i < numbers.length; i++) {
-            // 如果记数为0
-            if (count == 0) {
-                // 重新记录一个数，假设它是出现次数大于数组一半的
-                result = numbers[i];
-                // 记录统计值
-                count = 1;
-            }
-            // 如果记录的值与统计值相等，记数值增加
-            else if (result == numbers[i]) {
+        int result = Integer.MIN_VALUE;
+        int count = 0;
+        for (int i: numbers){
+            if (i == result){
                 count++;
-            }
-            // 如果不相同就减少，相互抵消
-            else {
-                count--;
-            }
-        }
-
-        // 最后的result可能是出现次数大于数组一半长度的值
-        // 统计result的出现次数
-        count = 0;
-        for (int number : numbers) {
-            if (result == number) {
-                count++;
+            }else{
+                if (count == 0){
+                    result = i;
+                    count = 1;
+                }else{
+                    count--;
+                }
             }
         }
-
-        // 如果出现次数大于数组的一半就返回对应的值
-        if (count > numbers.length / 2) {
+        int finalCnt = 0;
+        for (int i: numbers){
+            if (i == result){
+                finalCnt++;
+            }
+        }
+        // 判断计数得到的值是否为目标值
+        // 出现次数超过数组长度的一半
+        if (finalCnt > numbers.length/2){
             return result;
-        }
-        // 否则输入异常，应该返回0（牛客网AC所需）
-        else {
+        }else{
+            // 未找到则输出0
             return 0;
         }
     }
