@@ -13,41 +13,39 @@ public class Solution {
 
     public static ArrayList<ArrayList<Integer>> findContinuousSequence(int sum) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
-        if (sum < 3) {
+        if (sum < 3){
             return result;
         }
-
-        int small = 1;
-        int big = 2;
-        int middle = (1 + sum) / 2;
-        int curSum = small + big;
-
-        while (small < middle) {
-            if (curSum == sum) {
-                ArrayList<Integer> list = new ArrayList<>(2);
-                for (int i = small; i <= big; i++) {
-                    list.add(i);
-                }
-                result.add(list);
+        int left = 1;
+        int right = 2;
+        int curSum = left+right;
+        int middle = (1+sum)/2;
+        while (left < middle){
+            // 寻找到满足条件的序列
+            if (curSum == sum){
+                ArrayList<Integer> childResult = new ArrayList<>();
+               for (int i=left; i<=right; i++){
+                   childResult.add(i);
+               }
+               result.add(childResult);
             }
-
-            while (curSum > sum && small < middle) {
-                curSum -= small;
-                small++;
-
-                if (curSum == sum) {
-                    ArrayList<Integer> list = new ArrayList<>(2);
-                    for (int i = small; i <= big; i++) {
-                        list.add(i);
+            // 向右缩小滑动窗口大小
+            while (curSum > sum && left < middle){
+                curSum -= left;
+                left++;
+                // 寻找到满足条件的序列
+                if (curSum == sum){
+                    ArrayList<Integer> childResult = new ArrayList<>();
+                    for (int i=left; i<=right; i++){
+                        childResult.add(i);
                     }
-                    result.add(list);
+                    result.add(childResult);
                 }
             }
-
-            big++;
-            curSum += big;
+            // 向右增大滑动窗口大小
+            right++;
+            curSum += right;
         }
-
         return result;
     }
 
