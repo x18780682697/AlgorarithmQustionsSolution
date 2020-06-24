@@ -21,31 +21,26 @@ public class Solution {
      * @return
      */
     public static ArrayList<Integer> findNumbersWithSum(int[] data, int sum) {
-        ArrayList<Integer> result = new ArrayList<>(2);
-
-        if (data == null || data.length < 2) {
-            return result;
+        ArrayList<Integer> resultList = new ArrayList<>();
+        if (data == null || data.length < 2){
+            return resultList;
         }
-
-        int ahead = data.length - 1;
-        int behind = 0;
-        long curSum; // 统计和，取long是防止结果溢出
-
-        while (behind < ahead) {
-            curSum = data[behind] + data[ahead];
-
-            if (curSum == sum) {
-                result.add(data[behind]);
-                result.add(data[ahead]);
+        // 开始从头尾开始计算
+        int left = 0;
+        int right = data.length-1;
+        while (left < right){
+            int curSum = data[left]+data[right];
+            if (curSum > sum){ // 如果大于所求值，则right左移
+                right--;
+            }else if (curSum <sum){ // 如果小于所求值，则left右移
+                left++;
+            }else{ // 相等则已经找到两个满足条件的值
+                resultList.add(data[left]);
+                resultList.add(data[right]);
                 break;
-            } else if (curSum < sum) {
-                behind++;
-            } else {
-                ahead--;
             }
         }
-
-        return result;
+        return resultList;
     }
 
     /**
