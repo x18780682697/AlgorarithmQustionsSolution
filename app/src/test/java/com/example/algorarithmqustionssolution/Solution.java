@@ -1,5 +1,6 @@
 package com.example.algorarithmqustionssolution;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -7,45 +8,43 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public ArrayList<ArrayList<Integer> > FindContinuousSequence(int sum) {
-        return findContinuousSequence(sum);
+    public ArrayList<Integer> FindNumbersWithSum(int [] array,int sum) {
+        return findNumbersWithSum(array, sum);
     }
 
-    public static ArrayList<ArrayList<Integer>> findContinuousSequence(int sum) {
-        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
-        if (sum < 3){
+    /**
+     * 输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得得它们的和正好是s。
+     * 如果有多对数字的和等于s，输出任意一对即可。
+     *
+     * @param data
+     * @param sum
+     * @return
+     */
+    public static ArrayList<Integer> findNumbersWithSum(int[] data, int sum) {
+        ArrayList<Integer> result = new ArrayList<>(2);
+
+        if (data == null || data.length < 2) {
             return result;
         }
-        int left = 1;
-        int right = 2;
-        int curSum = left+right;
-        int middle = (1+sum)/2;
-        while (left < middle){
-            // 寻找到满足条件的序列
-            if (curSum == sum){
-                ArrayList<Integer> childResult = new ArrayList<>();
-               for (int i=left; i<=right; i++){
-                   childResult.add(i);
-               }
-               result.add(childResult);
+
+        int ahead = data.length - 1;
+        int behind = 0;
+        long curSum; // 统计和，取long是防止结果溢出
+
+        while (behind < ahead) {
+            curSum = data[behind] + data[ahead];
+
+            if (curSum == sum) {
+                result.add(data[behind]);
+                result.add(data[ahead]);
+                break;
+            } else if (curSum < sum) {
+                behind++;
+            } else {
+                ahead--;
             }
-            // 向右缩小滑动窗口大小
-            while (curSum > sum && left < middle){
-                curSum -= left;
-                left++;
-                // 寻找到满足条件的序列
-                if (curSum == sum){
-                    ArrayList<Integer> childResult = new ArrayList<>();
-                    for (int i=left; i<=right; i++){
-                        childResult.add(i);
-                    }
-                    result.add(childResult);
-                }
-            }
-            // 向右增大滑动窗口大小
-            right++;
-            curSum += right;
         }
+
         return result;
     }
 
