@@ -7,68 +7,48 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public String PrintMinNumber(int [] numbers) {
-        if (numbers == null || numbers.length == 0){
-            return "";
-        }
-        String[] numStr = new String[numbers.length];
-        for(int i=0; i<numbers.length; i++){
-            numStr[i] = ""+numbers[i];
-        }
-        return printMinNumber(numStr);
+    public ArrayList<ArrayList<Integer> > FindContinuousSequence(int sum) {
+        return findContinuousSequence(sum);
     }
 
-    /**
-     * 题目：输入一个正整数数组，把数组里所有数字拼接起来排成一个数，
-     * 打印能拼接出的所有数字中最小的一个。
-     * @param array 输入的数组
-     * @return 输出结果
-     */
-    public static String printMinNumber(String[] array) {
-
-        if (array == null || array.length < 1) {
-            throw new IllegalArgumentException("Array must contain value");
+    public static ArrayList<ArrayList<Integer>> findContinuousSequence(int sum) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        if (sum < 3) {
+            return result;
         }
 
-        quickSort(array, 0, array.length - 1);
+        int small = 1;
+        int big = 2;
+        int middle = (1 + sum) / 2;
+        int curSum = small + big;
 
-        StringBuilder builder = new StringBuilder();
-        for (String s : array) {
-            builder.append(s);
-        }
-
-        return builder.toString();
-    }
-
-    private static void quickSort(String[] array, int start, int end){
-        // 单个区间仅剩1个元素时排序完成
-        if (start < 0 || end >= array.length || start > end){
-            return;
-        }
-        int left = start;
-        int right = end;
-        // 左右分区算法
-        while (start < end){
-            String pivot = array[start];
-            while (start < end && customCompare(array[end], pivot) >= 0){
-                end--;
+        while (small < middle) {
+            if (curSum == sum) {
+                ArrayList<Integer> list = new ArrayList<>(2);
+                for (int i = small; i <= big; i++) {
+                    list.add(i);
+                }
+                result.add(list);
             }
-            array[start] = array[end];
-            while (start < end && customCompare(array[start], pivot) <= 0){
-                start++;
-            }
-            array[end] = array[start];
-            array[start] = pivot;
-        }
-        // 递归排序左右分区
-        quickSort(array, left, start-1);
-        quickSort(array, start+1, right);
-    }
 
-    private static int customCompare(String num1, String num2){
-        String num12 = num1+num2;
-        String num21 = num2+num1;
-        return num12.compareTo(num21);
+            while (curSum > sum && small < middle) {
+                curSum -= small;
+                small++;
+
+                if (curSum == sum) {
+                    ArrayList<Integer> list = new ArrayList<>(2);
+                    for (int i = small; i <= big; i++) {
+                        list.add(i);
+                    }
+                    result.add(list);
+                }
+            }
+
+            big++;
+            curSum += big;
+        }
+
+        return result;
     }
 
     /**
