@@ -1,15 +1,13 @@
 package com.example.algorarithmqustionssolution;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
+/**
+ * 31-整数中1出现的次数（从1到n整数中1出现的次数）
+ *
+ * 网页链接：https://lrh1993.gitbooks.io/android_interview_guide/content/algorithm/For-offer/29.html
+ * 题号链接：https://zhuanlan.zhihu.com/p/56200260
+ */
 @SuppressWarnings("unused")
-public class Solution {
-
-    public int NumberOf1Between1AndN_Solution(int n) {
-        return numberOf1Between1AndN(n);
-    }
+public class Question31 {
 
     /**
      * 题目：输入一个整数n求从1 到n这n个整数的十进制表示中1 出现的次数。
@@ -106,66 +104,4 @@ public class Solution {
         return result;
     }
 
-    /**
-     * 二叉树节点类
-     */
-    public static class BinaryTreeNode {
-        public int val;
-        public BinaryTreeNode left;
-        public BinaryTreeNode right;
-        public BinaryTreeNode parent;
-        public TreeNode origin;
-    }
-
-}
-
-
-/**
- * TreeNode和BinaryTreeNode之间的转换工具
- */
-class NodeTranslateUtil {
-    /**
-     * 转换为TreeNode
-     */
-    public static TreeNode toTreeNode(Solution.BinaryTreeNode node){
-        TreeNode treeNode = null;
-        if (node == null){
-            return null;
-        }else{
-            treeNode = new TreeNode(node.val);
-            treeNode.left = toTreeNode(node.left);
-            treeNode.right = toTreeNode(node.right);
-            treeNode.next = toTreeNode(node.parent);
-        }
-        return treeNode;
-    }
-
-    /**
-     * 转换为BinaryTreeNode
-     */
-    public static Solution.BinaryTreeNode toBinaryTreeNode(TreeNode node){
-        Solution.BinaryTreeNode binaryTreeNode = null;
-        if (node == null){
-            return null;
-        }else{
-            binaryTreeNode = new Solution.BinaryTreeNode();
-            binaryTreeNode.origin = node;
-            binaryTreeNode.val = node.val;
-            binaryTreeNode.left = toBinaryTreeNode(node.left);
-            binaryTreeNode.right = toBinaryTreeNode(node.right);
-            binaryTreeNode.parent = toBinaryTreeNode(node.next);
-        }
-        return binaryTreeNode;
-    }
-}
-
-/**
- * 牛客网二叉树定义
- */
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode next = null;
-    TreeNode(int x) { val = x; }
 }
