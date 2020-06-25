@@ -14,29 +14,27 @@ public class Solution {
     }
 
     public static int lastRemaining(int n, int m) {
-        if (n < 1 || m < 1) {
+        if (n < 1 || m < 1){
             return -1;
         }
+        return lastRemainingCore(n, m);
+    }
 
-        List<Integer> list = new LinkedList<>();
-        for (int i = 0; i < n; i++) {
-            list.add(i);
+    public static int lastRemainingCore(int n, int m){
+        List<Integer> linkedList = new LinkedList<>();
+        // 创建与n对应的的环形链表
+        for (int i = 0; i < n; i++){
+            linkedList.add(i);
         }
-
-        // 要删除元素的位置
-        int idx = 0;
-
-        while (list.size() > 1) {
-
-            // 只要移动m-1次就可以移动到下一个要删除的元素上
-            for (int i = 1; i < m; i++) {
-                idx = (idx + 1) % list.size();
+        int needRemovedIdx = 0;
+        while (linkedList.size() > 1){
+            // 计算在链表移动m次后，待删除元素的索引
+            for (int i = 0; i < m-1; i++){
+                needRemovedIdx = (needRemovedIdx+1)%linkedList.size();
             }
-
-            list.remove(idx);
+            linkedList.remove(needRemovedIdx);
         }
-
-        return list.get(0);
+        return linkedList.get(0);
     }
 
     /**
