@@ -19,22 +19,12 @@ public class Solution {
         }
 
         int[] result = new int[data.length];
-
-        // result[0]取1
-        result[0] = 1;
-        for (int i = 1; i < data.length; i++) {
-            // 第一步每个result[i]都等于于data[0]*data[1]...data[i-1]
-            // 当i=n-1时，此时result[n-1]的结果已经计算出来了
-            result[i] = result[i -1] * data[i - 1];
-        }
-
-        // tmp保存data[n-1]*data[n-2]...data[i+1]的结果
-        double tmp = 1;
-        // 第二步求data[n-1]*data[n-2]...data[i+1]
-        // result[n-1]的结果已经计算出来，所以从data.length-2开始操作
-        for (int i = data.length - 2; i >= 0; i--) {
-            tmp *= data[i + 1];
-            result[i] *= tmp;
+        for (int i=0; i<data.length; i++){
+            int tmpResult = 1;
+            for (int j=0; j<data.length; j++){
+                tmpResult *= (j==i ? 1: data[j]);
+            }
+            result[i] = tmpResult;
         }
 
         return result;
