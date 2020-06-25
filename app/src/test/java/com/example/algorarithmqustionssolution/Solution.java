@@ -9,32 +9,35 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public int LastRemaining_Solution(int n, int m) {
-        return lastRemaining(n, m);
+    public int[] multiply(int[] A) {
+        return multiplyCore(A);
     }
 
-    public static int lastRemaining(int n, int m) {
-        if (n < 1 || m < 1){
-            return -1;
+    public static int[] multiplyCore(int[] data) {
+        if (data == null || data.length < 2) {
+            return null;
         }
-        return lastRemainingCore(n, m);
-    }
 
-    public static int lastRemainingCore(int n, int m){
-        List<Integer> linkedList = new LinkedList<>();
-        // 创建与n对应的的环形链表
-        for (int i = 0; i < n; i++){
-            linkedList.add(i);
+        int[] result = new int[data.length];
+
+        // result[0]取1
+        result[0] = 1;
+        for (int i = 1; i < data.length; i++) {
+            // 第一步每个result[i]都等于于data[0]*data[1]...data[i-1]
+            // 当i=n-1时，此时result[n-1]的结果已经计算出来了
+            result[i] = result[i -1] * data[i - 1];
         }
-        int needRemovedIdx = 0;
-        while (linkedList.size() > 1){
-            // 计算在链表移动m次后，待删除元素的索引
-            for (int i = 0; i < m-1; i++){
-                needRemovedIdx = (needRemovedIdx+1)%linkedList.size();
-            }
-            linkedList.remove(needRemovedIdx);
+
+        // tmp保存data[n-1]*data[n-2]...data[i+1]的结果
+        double tmp = 1;
+        // 第二步求data[n-1]*data[n-2]...data[i+1]
+        // result[n-1]的结果已经计算出来，所以从data.length-2开始操作
+        for (int i = data.length - 2; i >= 0; i--) {
+            tmp *= data[i + 1];
+            result[i] *= tmp;
         }
-        return linkedList.get(0);
+
+        return result;
     }
 
     /**
