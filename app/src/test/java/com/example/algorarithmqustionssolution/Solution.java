@@ -3,42 +3,40 @@ package com.example.algorarithmqustionssolution;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class Solution {
 
-    public String LeftRotateString(String str,int n) {
-        return new String(leftRotateString(str.toCharArray(), n));
+    public int LastRemaining_Solution(int n, int m) {
+        return lastRemaining(n, m);
     }
 
-    public static char[] leftRotateString(char[] data, int n) {
-        if (data != null && data.length > 1){
-            leftRotateStringCore(data, n);
+    public static int lastRemaining(int n, int m) {
+        if (n < 1 || m < 1) {
+            return -1;
         }
-        return data;
-    }
 
-    /**
-     * 对数组进行左旋转操作
-     */
-    public static void leftRotateStringCore(char[] data, int n) {
-        reverseArray(data, 0, n-1);
-        reverseArray(data, n, data.length-1);
-        reverseArray(data, 0, data.length-1);
-    }
-
-    /**
-     * 翻转数组指定部分
-     */
-    public static void reverseArray(char[] data, int start, int end){
-        while (start < end){
-            char tmp = data[start];
-            data[start] = data[end];
-            data[end] = tmp;
-            start++;
-            end--;
+        List<Integer> list = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(i);
         }
+
+        // 要删除元素的位置
+        int idx = 0;
+
+        while (list.size() > 1) {
+
+            // 只要移动m-1次就可以移动到下一个要删除的元素上
+            for (int i = 1; i < m; i++) {
+                idx = (idx + 1) % list.size();
+            }
+
+            list.remove(idx);
+        }
+
+        return list.get(0);
     }
 
     /**
