@@ -19,14 +19,18 @@ public class Solution {
         }
 
         int[] result = new int[data.length];
+        int tmpBelow = 1;
+        // 计算下三角部分的乘积，自上而下累乘
         for (int i=0; i<data.length; i++){
-            int tmpResult = 1;
-            for (int j=0; j<data.length; j++){
-                tmpResult *= (j==i ? 1: data[j]);
-            }
-            result[i] = tmpResult;
+            tmpBelow *= (i==0 ? 1 : data[i-1]);
+            result[i] = tmpBelow;
         }
-
+        // 计算上三角部分的乘积，自下而上类累乘
+        int tmpAbove = 1;
+        for (int i=data.length-1; i>=0; i--){
+            tmpAbove *= (i==data.length-1 ? 1 : data[i+1]);
+            result[i] *= tmpAbove;
+        }
         return result;
     }
 
