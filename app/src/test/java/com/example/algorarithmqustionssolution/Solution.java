@@ -8,39 +8,48 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Solution {
 
-    public ArrayList<Integer> FindNumbersWithSum(int [] array,int sum) {
-        return findNumbersWithSum(array, sum);
+    public String LeftRotateString(String str,int n) {
+        return new String(leftRotateString(str.toCharArray(), n));
     }
 
     /**
-     * 输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得得它们的和正好是s。
-     * 如果有多对数字的和等于s，输出任意一对即可。
-     *
+     * 题目二：字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。
+     * 请定义一个函数实现字符串左旋转操作的功能。
      * @param data
-     * @param sum
+     * @param n
      * @return
      */
-    public static ArrayList<Integer> findNumbersWithSum(int[] data, int sum) {
-        ArrayList<Integer> resultList = new ArrayList<>();
-        if (data == null || data.length < 2){
-            return resultList;
+    public static char[] leftRotateString(char[] data, int n) {
+        if (data == null || n < 0 || n > data.length) {
+            return data;
         }
-        // 开始从头尾开始计算
-        int left = 0;
-        int right = data.length-1;
-        while (left < right){
-            int curSum = data[left]+data[right];
-            if (curSum > sum){ // 如果大于所求值，则right左移
-                right--;
-            }else if (curSum <sum){ // 如果小于所求值，则left右移
-                left++;
-            }else{ // 相等则已经找到两个满足条件的值
-                resultList.add(data[left]);
-                resultList.add(data[right]);
-                break;
-            }
+
+        reverse(data, 0, data.length - 1);
+        reverse(data, 0, data.length - n - 1);
+        reverse(data, data.length - n, data.length - 1);
+
+        return data;
+    }
+    /**
+     * 将data中start到end之间的数字反转
+     *
+     * @param data
+     * @param start
+     * @param end
+     */
+    public static void reverse(char[] data, int start, int end) {
+        if (data == null || data.length < 1 || start < 0 || end > data.length || start > end) {
+            return;
         }
-        return resultList;
+
+        while (start < end) {
+            char tmp = data[start];
+            data[start] = data[end];
+            data[end] = tmp;
+
+            start++;
+            end--;
+        }
     }
 
     /**
